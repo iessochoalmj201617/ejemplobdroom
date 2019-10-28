@@ -2,22 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1bf123c60c92f5db49b94bbb503334a0",
+    "identityHash": "d71a3c6ca3ff2f4ac80d5349a3c31656",
     "entities": [
       {
         "tableName": "contacto",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `numerotelefono` TEXT NOT NULL, `nombre` TEXT NOT NULL, `apellido` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT NOT NULL, `apellido` TEXT, `numerotelefono` TEXT NOT NULL, `fechanacimiento` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "mNumTelefono",
-            "columnName": "numerotelefono",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -31,6 +25,18 @@
             "columnName": "apellido",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "mNumTelefono",
+            "columnName": "numerotelefono",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mfechaNacimiento",
+            "columnName": "fechanacimiento",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -45,7 +51,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1bf123c60c92f5db49b94bbb503334a0\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d71a3c6ca3ff2f4ac80d5349a3c31656\")"
     ]
   }
 }

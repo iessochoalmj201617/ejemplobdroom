@@ -19,6 +19,9 @@ public class ContactoRepository {
     LiveData<List<Contacto>> getAllContactos(){
         return mAllContactos;
     }
+    /*
+    Insertar nos obliga a crear tarea en segundo plano
+     */
     public void insert(Contacto contacto){
         new inserAsyncTask(mContactoDao).execute(contacto);
     }
@@ -35,4 +38,25 @@ public class ContactoRepository {
             return null;
         }
     }
+/*
+Borrar
+ */
+    public void delete(Contacto contacto){
+        new deleteAsyncTask(mContactoDao).execute(contacto);
+    }
+    private static class deleteAsyncTask extends AsyncTask<Contacto,Void,Void> {
+        private ContactoDao mAsyncTaskDao;
+        public deleteAsyncTask(ContactoDao mContactoDao) {
+            mAsyncTaskDao=mContactoDao;
+        }
+
+        @Override
+        protected Void doInBackground(Contacto... contactos) {
+            mAsyncTaskDao.deleteByContacto(contactos[0]);
+            return null;
+        }
+    }
+    /*public void deleteById(int id){
+        mContactoDao.deleteByContactoId(id);
+    }*/
 }

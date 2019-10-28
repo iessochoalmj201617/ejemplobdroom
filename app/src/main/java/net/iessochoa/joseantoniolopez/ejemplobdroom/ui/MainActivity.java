@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
@@ -23,14 +24,19 @@ public class MainActivity extends AppCompatActivity {
 
     private ContactoViewModel contactoViewModel;
     private Button btnNuevo;
+    private EditText etBuscar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        etBuscar=findViewById(R.id.etBuscar);
         RecyclerView recyclerView = findViewById(R.id.reciclerView);
+        //creamos el adaptador
         final ContactoListAdapter adapter = new ContactoListAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         contactoViewModel= ViewModelProviders.of(this).get(ContactoViewModel.class);
         contactoViewModel.getAllContactos().observe(this, new Observer<List<Contacto>>() {
@@ -46,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(MainActivity.this,NuevoContactoActivity.class);
                 startActivityForResult(intent,NUEVO_CONTACTO_REQUEST_CODE);
+            }
+        });
+        //asignamos la acción de borrado de elemento
+        //
+        adapter.setOnClickListener(new ContactoListAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Contacto contacto) {
+                contactoViewModel.delete(contacto);
             }
         });
 

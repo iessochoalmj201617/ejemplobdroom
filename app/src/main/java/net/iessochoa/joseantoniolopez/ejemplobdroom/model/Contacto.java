@@ -6,6 +6,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 //para ver los usos de las anotaciones de Entity
@@ -17,7 +20,6 @@ public class Contacto implements Serializable {
     @NonNull
     private int id;
 
-
     @ColumnInfo(name = "nombre")
     @NonNull
     private  String mNombre;
@@ -27,11 +29,22 @@ public class Contacto implements Serializable {
     @NonNull
     private String mNumTelefono;
 
-    public Contacto(@NonNull String mNombre,@NonNull String mApellido,@NonNull String mNumTelefono) {
-        this.mNumTelefono = mNumTelefono;
+    @NonNull
+    public Date getMfechaNacimiento() {
+        return mfechaNacimiento;
+    }
+
+    @ColumnInfo(name = "fechanacimiento")
+    @NonNull
+    private Date mfechaNacimiento;
+
+    public Contacto(@NonNull String mNombre, String mApellido, @NonNull String mNumTelefono, @NonNull Date mfechaNacimiento) {
         this.mNombre = mNombre;
         this.mApellido = mApellido;
+        this.mNumTelefono = mNumTelefono;
+        this.mfechaNacimiento = mfechaNacimiento;
     }
+
     public int getId() {
         return id;
     }
@@ -64,5 +77,21 @@ public class Contacto implements Serializable {
 
     public void setApellido(String mApellido) {
         this.mApellido = mApellido;
+    }
+
+    @NonNull
+    public Date getFechaNacimiento() {
+        return mfechaNacimiento;
+    }
+
+    public void setFechaNacimiento(@NonNull Date mfechaNacimiento) {
+        this.mfechaNacimiento = mfechaNacimiento;
+    }
+
+    @Override
+    public String toString() {
+        //para mostrar la fecha en formato del idioma del dispositivo
+        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
+        return  mNombre + " " + mApellido + " "+ mNumTelefono + ' ' + df.format(mfechaNacimiento) ;
     }
 }

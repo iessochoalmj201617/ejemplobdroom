@@ -16,7 +16,17 @@ import java.util.List;
 
 public class ContactoListAdapter extends RecyclerView.Adapter<ContactoListAdapter.ContactoViewHolder> {
     private final LayoutInflater mInflater;
-    private List<Contacto> mContactos; // Cached copy of words
+    private List<Contacto> mContactos; //
+    //definimos la interface para el control del click
+    private onItemClickListener listener;
+    public interface onItemClickListener{
+        void onItemClick(Contacto contacto);
+    }
+    //nos permite asignar el listener creado en la actividad
+    public void setOnClickListener(onItemClickListener listener)
+    {
+        this.listener=listener;
+    }
 
     @NonNull
     @Override
@@ -28,11 +38,22 @@ public class ContactoListAdapter extends RecyclerView.Adapter<ContactoListAdapte
     @Override
     public void onBindViewHolder(@NonNull ContactoViewHolder holder, int position) {
         if (mContactos != null) {
-            Contacto current = mContactos.get(position);
-            holder.itemView.setText(current.getNombre());
+            final Contacto contacto = mContactos.get(position);
+            holder.itemView.setText(contacto.toString());
+//asignamos el listener
+            if(listener!=null){
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onItemClick(contacto);
+                    }
+                });
+            }
+
         } else {
             // Covers the case of data not being ready yet.
             holder.itemView.setText("Sin contactos");
+
         }
     }
 
