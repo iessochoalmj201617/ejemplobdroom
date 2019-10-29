@@ -19,7 +19,13 @@ public class ContactoViewModel extends AndroidViewModel {
     public LiveData<List<Contacto>> getAllContactos()
         {
             return mAllContactos;
+
         }
+    public LiveData<List<Contacto>> getByNombre(String nombre)
+    {
+        mAllContactos=mRepository.getByNombre("%"+nombre+"%");
+        return mAllContactos;
+    }
     public void insert(Contacto contacto){
         mRepository.insert(contacto);
     }

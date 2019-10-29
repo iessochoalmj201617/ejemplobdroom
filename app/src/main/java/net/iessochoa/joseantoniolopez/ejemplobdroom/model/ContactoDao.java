@@ -32,7 +32,7 @@ public interface ContactoDao {
     @Query("SELECT * FROM contacto ORDER BY nombre ASC")
     LiveData<List<Contacto>> getContacto();
     @Query("SELECT * FROM contacto where nombre LIKE  :nombre OR apellido LIKE :nombre")
-    Contacto findByName(String nombre);
+    LiveData<List<Contacto>> findByNombre(String nombre);
     @Query("SELECT COUNT(*) from contacto")
     int countContactos();
     @Query("SELECT * FROM contacto WHERE fechaNacimiento <= :fechaNacimiento")

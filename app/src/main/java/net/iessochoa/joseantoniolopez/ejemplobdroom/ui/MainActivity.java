@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +62,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Contacto contacto) {
                 contactoViewModel.delete(contacto);
+            }
+        });
+        etBuscar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                contactoViewModel.getByNombre(charSequence.toString());
+                contactoViewModel.getAllContactos().observe(MainActivity.this, new Observer<List<Contacto>>() {
+                    @Override
+                    public void onChanged(List<Contacto> contactos) {
+                        adapter.setContactos(contactos);
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 

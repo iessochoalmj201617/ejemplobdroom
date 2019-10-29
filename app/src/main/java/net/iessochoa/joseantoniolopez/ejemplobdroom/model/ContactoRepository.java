@@ -19,6 +19,10 @@ public class ContactoRepository {
     LiveData<List<Contacto>> getAllContactos(){
         return mAllContactos;
     }
+    LiveData<List<Contacto>> getByNombre(String nombre){
+        mAllContactos=mContactoDao.findByNombre(nombre);
+        return mAllContactos;
+    }
     /*
     Insertar nos obliga a crear tarea en segundo plano
      */
