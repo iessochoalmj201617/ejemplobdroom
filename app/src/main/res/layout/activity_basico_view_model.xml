@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
-
+    tools:context=".ui.BasicoViewModelActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reciclerView"
+        android:id="@+id/rvListaContactos"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -29,35 +28,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etBuscar"
+    <TextView
+        android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:ems="10"
-        android:hint="buscar"
-        android:inputType="textPersonName"
+       android:text="Pulsa un contacto para eliminarlo"
         app:layout_constraintStart_toEndOf="@+id/btnNuevo"
         app:layout_constraintTop_toTopOf="@+id/btnNuevo" />
-
-    <Button
-        android:id="@+id/btnBasico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:text="ViewModel_Basico"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnBusqueda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Viewmodel_Busqueda"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBasico" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

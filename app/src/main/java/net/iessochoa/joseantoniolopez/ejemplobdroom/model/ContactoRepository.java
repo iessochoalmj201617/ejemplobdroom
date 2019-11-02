@@ -11,15 +11,15 @@ public class ContactoRepository {
     private ContactoDao mContactoDao;
     private LiveData<List<Contacto>> mAllContactos;
 
-    ContactoRepository(Application application){
+    public ContactoRepository(Application application){
         ContactoDatabase db=ContactoDatabase.getDatabase(application);
         mContactoDao =db.contactoDao();
         mAllContactos=mContactoDao.getAllContactos();
     }
-    LiveData<List<Contacto>> getAllContactos(){
+    public LiveData<List<Contacto>> getAllContactos(){
         return mAllContactos;
     }
-    LiveData<List<Contacto>> getByNombre(String nombre){
+    public LiveData<List<Contacto>> getByNombre(String nombre){
         mAllContactos=mContactoDao.findByNombre(nombre);
         return mAllContactos;
     }

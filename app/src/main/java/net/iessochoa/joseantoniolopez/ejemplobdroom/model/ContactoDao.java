@@ -13,13 +13,16 @@ import java.util.List;
 
 @Dao
 public interface ContactoDao {
+    //nuevo contacto sustituyendo si ya existe
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Contacto contacto);
-
-    @Query("DELETE FROM contacto")
+//borrado de los contactos
+    @Query("DELETE FROM "+Contacto.TABLE_NAME)
     void deleteAll();
+    //borrado del contacto pasado por parámetro.
     @Delete
     void deleteByContacto(Contacto contacto);
+
 //    @Query("DELETE FROM contacto WHERE id = :id")
 //    void deleteByContactoId(int id);
 
@@ -27,15 +30,20 @@ public interface ContactoDao {
     void update(Contacto contacto);
 //https://github.com/ajaysaini-sgvu/room-persistence-sample/blob/master/app/src/main/java/com/nagarro/persistence/dao/UserDao.java
     //https://github.com/android/architecture-components-samples/tree/master/BasicSample/app/src/main/java/com/example/android/persistence
-    @Query("SELECT * FROM contacto ORDER BY nombre ASC")
+    //todos los contactos
+    @Query("SELECT * FROM "+Contacto.TABLE_NAME)
     LiveData<List<Contacto>> getAllContactos();
-    @Query("SELECT * FROM contacto ORDER BY nombre ASC")
-    LiveData<List<Contacto>> getContacto();
+    //Todos los contactos ordenado por nombre o apellido o fecha pasado por parámetro
+    @Query("SELECT * FROM contacto ORDER BY :ordenadoPor ASC")
+    LiveData<List<Contacto>> getContactosOrdenadoPor(String ordenadoPor);
+    //Aquellos contactos que coincide con la condición
     @Query("SELECT * FROM contacto where nombre LIKE  :nombre OR apellido LIKE :nombre")
     LiveData<List<Contacto>> findByNombre(String nombre);
+    //número de contáctos
     @Query("SELECT COUNT(*) from contacto")
     int countContactos();
-    @Query("SELECT * FROM contacto WHERE fechaNacimiento <= :fechaNacimiento")
+    //aquellos contactos menores que la fecha pasada por parámetro
+    @Query("SELECT * FROM contacto WHERE fechanacimiento <= :fechaNacimiento")
     LiveData<List<Contacto>> contactosMenoresQue(Date fechaNacimiento);
 
 

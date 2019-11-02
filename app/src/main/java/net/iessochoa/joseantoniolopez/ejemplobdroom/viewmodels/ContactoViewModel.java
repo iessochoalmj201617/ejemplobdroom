@@ -1,4 +1,4 @@
-package net.iessochoa.joseantoniolopez.ejemplobdroom.model;
+package net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels;
 
 import android.app.Application;
 
@@ -7,6 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
+
+import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package net.iessochoa.joseantoniolopez.ejemplobdroom.model;
 
+import android.provider.BaseColumns;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -14,35 +16,41 @@ import java.util.Locale;
 //para ver los usos de las anotaciones de Entity
 // https://developer.android.com/training/data-storage/room/defining-data.html#java
 //https://codelabs.developers.google.com/codelabs/android-room-with-a-view
-@Entity(tableName = "contacto")
+@Entity(tableName = Contacto.TABLE_NAME)
 public class Contacto implements Serializable {
+    public static final String TABLE_NAME="contacto";
+    public static final String ID= BaseColumns._ID;
+    public static final String NOMBRE="nombre";
+    public static final String APELLIDO="apellido";
+    public static final String TELEFONO="numerotelefono";
+    public static final String FECHA_NACIMIENTO="fechanacimiento";
+
+
     @PrimaryKey(autoGenerate = true)
     @NonNull
+    @ColumnInfo(name = ID)
     private int id;
 
-    @ColumnInfo(name = "nombre")
+    @ColumnInfo(name = NOMBRE)
     @NonNull
     private  String mNombre;
-    @ColumnInfo(name="apellido")
+
+    @ColumnInfo(name=APELLIDO)
     private String mApellido;
-    @ColumnInfo(name = "numerotelefono")
+
+    @ColumnInfo(name = TELEFONO)
     @NonNull
     private String mNumTelefono;
 
+    @ColumnInfo(name = FECHA_NACIMIENTO)
     @NonNull
-    public Date getMfechaNacimiento() {
-        return mfechaNacimiento;
-    }
+    private Date mFechaNacimiento;
 
-    @ColumnInfo(name = "fechanacimiento")
-    @NonNull
-    private Date mfechaNacimiento;
-
-    public Contacto(@NonNull String mNombre, String mApellido, @NonNull String mNumTelefono, @NonNull Date mfechaNacimiento) {
+    public Contacto(@NonNull String mNombre, String mApellido, @NonNull String mNumTelefono, @NonNull Date mFechaNacimiento) {
         this.mNombre = mNombre;
         this.mApellido = mApellido;
         this.mNumTelefono = mNumTelefono;
-        this.mfechaNacimiento = mfechaNacimiento;
+        this.mFechaNacimiento = mFechaNacimiento;
     }
 
     public int getId() {
@@ -81,17 +89,20 @@ public class Contacto implements Serializable {
 
     @NonNull
     public Date getFechaNacimiento() {
-        return mfechaNacimiento;
+        return mFechaNacimiento;
     }
-
-    public void setFechaNacimiento(@NonNull Date mfechaNacimiento) {
-        this.mfechaNacimiento = mfechaNacimiento;
+    /*@NonNull
+    public Date getmFechaNacimiento() {
+        return mFechaNacimiento;
+    }*/
+    public void setFechaNacimiento(@NonNull Date mFechaNacimiento) {
+        this.mFechaNacimiento = mFechaNacimiento;
     }
 
     @Override
     public String toString() {
         //para mostrar la fecha en formato del idioma del dispositivo
         DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
-        return  mNombre + " " + mApellido + " "+ mNumTelefono + ' ' + df.format(mfechaNacimiento) ;
+        return  mNombre + " " + mApellido + " "+ mNumTelefono + ' ' + df.format(mFechaNacimiento) ;
     }
 }
