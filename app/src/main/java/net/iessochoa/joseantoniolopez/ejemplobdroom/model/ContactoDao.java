@@ -6,7 +6,10 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.Date;
 import java.util.List;
@@ -31,7 +34,7 @@ public interface ContactoDao {
 //https://github.com/ajaysaini-sgvu/room-persistence-sample/blob/master/app/src/main/java/com/nagarro/persistence/dao/UserDao.java
     //https://github.com/android/architecture-components-samples/tree/master/BasicSample/app/src/main/java/com/example/android/persistence
     //todos los contactos
-    @Query("SELECT * FROM "+Contacto.TABLE_NAME)
+    @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY apellido")
     LiveData<List<Contacto>> getAllContactos();
     //Todos los contactos ordenado por nombre o apellido o fecha pasado por parámetro
     @Query("SELECT * FROM contacto ORDER BY :ordenadoPor ASC")
@@ -45,6 +48,17 @@ public interface ContactoDao {
     //aquellos contactos menores que la fecha pasada por parámetro
     @Query("SELECT * FROM contacto WHERE fechanacimiento <= :fechaNacimiento")
     LiveData<List<Contacto>> contactosMenoresQue(Date fechaNacimiento);
+    //aquellos contactos que coinciden con la condición y ordenado por.
+    //NOTA: No funciona el parámetro en ORDER BY
+    @Query("SELECT * FROM contacto where nombre LIKE  :nombre OR apellido LIKE :nombre" +
+                    " ORDER BY :ordenadoPor")
+    LiveData<List<Contacto>> findByNombreOrderBy(String nombre,String ordenadoPor);
+    //lista por nombre y fecha de nacimiento menor que
+    @Query("SELECT * FROM contacto where (nombre LIKE  :nombre OR apellido LIKE :nombre)" +
+            " AND (fechanacimiento <= :menorQue)")
+    LiveData<List<Contacto>> findByNombreFecha(String nombre,Date menorQue);
+   /* @RawQuery
+    LiveData<Contacto> ordenadoPorRaw(SupportSQLiteDatabase query);*/
 
 
 

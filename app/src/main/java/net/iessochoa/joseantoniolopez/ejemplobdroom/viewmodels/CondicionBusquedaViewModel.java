@@ -16,20 +16,21 @@ import java.util.List;
 
 public class CondicionBusquedaViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
-
     //LiveData que depende de otros elementos
     private MutableLiveData<String> condicionBusquedaLiveData;
-    // private String condicionBusqueda;
+    // Lista de contactos devuelto por sql mediante Room;
     private LiveData<List<Contacto>> listaContactosLiveData;
+
     public CondicionBusquedaViewModel(@NonNull Application application) {
-        super(application);mRepository=new ContactoRepository(application);
+        super(application);
+        mRepository=new ContactoRepository(application);
 
-
-        //comprobación de Livedata que cambia por condición de otro.Nos evita tener que crearlo
+        //Este Livedata estará asociado al editext de busqueda por nombre
         condicionBusquedaLiveData=new MutableLiveData<String>();
         //en primer momento no hay condición
         condicionBusquedaLiveData.setValue("");
-        //switchMap que me permite cambiar el livedata al modificarse la consulta de busqueda
+        //switchMap nos me permite cambiar el livedata de la consulta SQL
+        // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
         listaContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<String, LiveData<List<Contacto>>>() {
             @Override
             public LiveData<List<Contacto>> apply(String nombre) {
