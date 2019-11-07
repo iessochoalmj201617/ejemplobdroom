@@ -9,23 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
-import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.BasicoViewModel;
-import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.ContactoViewModel;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.AABasicoViewModel;
 
 import java.util.List;
 
-public class BasicoViewModelActivity extends AppCompatActivity {
+public class AABasicoViewModelActivity extends AppCompatActivity {
     public static final int NUEVO_CONTACTO_REQUEST_CODE = 1;
 
-    private BasicoViewModel contactoViewModel;
+    private AABasicoViewModel contactoViewModel;
     private Button btnNuevo;
 
     @Override
@@ -41,7 +37,7 @@ public class BasicoViewModelActivity extends AppCompatActivity {
         rvListaContactos.setLayoutManager(new LinearLayoutManager(this));
         //VIEW_MODEL
         //Recuperamos el ViewModel
-        contactoViewModel= ViewModelProviders.of(this).get(BasicoViewModel.class);
+        contactoViewModel= ViewModelProviders.of(this).get(AABasicoViewModel.class);
         //Este livedata nos permite ver todos los contactos y en caso de que haya un cambio en la
         //base de datos, se mostrará automáticamente
         contactoViewModel.getAllContactos().observe(this, new Observer<List<Contacto>>() {
@@ -58,7 +54,7 @@ public class BasicoViewModelActivity extends AppCompatActivity {
         btnNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(BasicoViewModelActivity.this,NuevoContactoActivity.class);
+                Intent intent=new Intent(AABasicoViewModelActivity.this,NuevoContactoActivity.class);
                 startActivityForResult(intent,NUEVO_CONTACTO_REQUEST_CODE);
             }
         });

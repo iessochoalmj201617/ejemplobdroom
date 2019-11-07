@@ -15,7 +15,7 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
 import java.util.ArrayList;
 import java.util.List;
 //https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7
-public class VariasCondicionesViewModel extends AndroidViewModel {
+public class CCVariasCondicionesViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
     //utilizamos una ArrayList con dos elementos: el primero nos sirve
     //para buscar por nombre y el segundo para ordenarPor
@@ -24,7 +24,7 @@ public class VariasCondicionesViewModel extends AndroidViewModel {
 
     private LiveData<List<Contacto>> listContactosLiveData;
 
-    public VariasCondicionesViewModel(@NonNull Application application) {
+    public CCVariasCondicionesViewModel(@NonNull Application application) {
         super(application);
         mRepository=new ContactoRepository(application);
 

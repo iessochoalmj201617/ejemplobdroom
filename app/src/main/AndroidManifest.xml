@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.VariasCondicionesViewModelActivity"></activity>
-        <activity android:name=".ui.CondicionBusquedaViewModelActivity" />
-        <activity android:name=".ui.BasicoViewModelActivity" />
+        <activity android:name=".ui.CCVariasCondicionesViewModelActivity"></activity>
+        <activity android:name=".ui.BBCondicionBusquedaViewModelActivity" />
+        <activity android:name=".ui.AABasicoViewModelActivity" />
         <activity android:name=".ui.NuevoContactoActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>

@@ -14,14 +14,14 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
 
 import java.util.List;
 
-public class CondicionBusquedaViewModel extends AndroidViewModel {
+public class BBCondicionBusquedaViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
     //LiveData que depende de otros elementos
     private MutableLiveData<String> condicionBusquedaLiveData;
     // Lista de contactos devuelto por sql mediante Room;
     private LiveData<List<Contacto>> listaContactosLiveData;
 
-    public CondicionBusquedaViewModel(@NonNull Application application) {
+    public BBCondicionBusquedaViewModel(@NonNull Application application) {
         super(application);
         mRepository=new ContactoRepository(application);
 

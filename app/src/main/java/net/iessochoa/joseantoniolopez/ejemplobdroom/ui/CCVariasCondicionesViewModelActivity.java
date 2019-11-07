@@ -17,43 +17,55 @@ import android.widget.EditText;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
-import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.CondicionBusquedaViewModel;
-import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.ContactoViewModel;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.CCVariasCondicionesViewModel;
 
 import java.util.List;
 
-public class CondicionBusquedaViewModelActivity extends AppCompatActivity {
+public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
     public static final int NUEVO_CONTACTO_REQUEST_CODE = 1;
 
-    private CondicionBusquedaViewModel contactoViewModel;
+    private CCVariasCondicionesViewModel contactoViewModel;
     private Button btnNuevo;
     private EditText etBuscar;
-
+    //final String[] ordenadoPor =
+    //        new String[]{Contacto.NOMBRE,Contacto.APELLIDO,Contacto.FECHA_NACIMIENTO};
+//    final String[] ordenadoPor =
+//            new String[]{"1","2","3"};
+ //   Spinner spnOrdenadoPor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_condicion_busqueda_view_model);
-
+        setContentView(R.layout.activity_varias_condiciones_view_model);
 
         etBuscar=findViewById(R.id.etBuscar);
+
+        //************SPINNER******************
+       /* spnOrdenadoPor=findViewById(R.id.spnOrdenadoPor);
+        final ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, ordenadoPor);
+        adaptador.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        spnOrdenadoPor.setAdapter(adaptador);*/
+        //************RECYCLERVIEW******************
         RecyclerView recyclerView = findViewById(R.id.rvListaContactos);
         //creamos el adaptador
         final ContactoListAdapter adapter = new ContactoListAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //Recuperamos el ViewModel
-        contactoViewModel= ViewModelProviders.of(this).get(CondicionBusquedaViewModel.class);
+        //*********VIEWMODEL******************
+        contactoViewModel= ViewModelProviders.of(this).get(CCVariasCondicionesViewModel.class);
 
 
-        //Creamos un nuevo contacto mediante otra actividad. Al insestar el nuevo elemento,el observer anterior
+        //************NUEVO Y BORRADO DE CONTACTO
+        // Creamos un nuevo contacto mediante otra actividad. Al insertar el nuevo elemento,el observer anterior
         // nos mostrará el resultado automáticamente
         //
         btnNuevo=findViewById(R.id.btnNuevo);
         btnNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(CondicionBusquedaViewModelActivity.this,NuevoContactoActivity.class);
+                Intent intent=new Intent(CCVariasCondicionesViewModelActivity.this,NuevoContactoActivity.class);
                 startActivityForResult(intent,NUEVO_CONTACTO_REQUEST_CODE);
             }
         });
@@ -67,14 +79,14 @@ public class CondicionBusquedaViewModelActivity extends AppCompatActivity {
                 contactoViewModel.delete(contacto);
             }
         });
-        /*
+        /***********OBSERVERS*****************************
          el livedata cuando cambian las condiciones de busqueda actualiza la query
          . En nuestro caso vamos
         a probar como al modificar el texto de busqueda por nombre, se modifica el Livedata de la lista
         Para ello, fijaros en la clase CondicioBusquedaViewModel, la clase Transformation
          */
         //Asignamos el observador a la busqueda hecha. Si hay cambios actualizamos el adaptador
-        contactoViewModel.getByNombre().observe(this, new Observer<List<Contacto>>() {
+        contactoViewModel.getListContactosLiveData().observe(this, new Observer<List<Contacto>>() {
             @Override
             public void onChanged(List<Contacto> contactos) {
                 adapter.setContactos(contactos);
@@ -94,10 +106,20 @@ public class CondicionBusquedaViewModelActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 //actualizamos el Livedata que a su vez cambiara las condiciones de busqueda
-                contactoViewModel.setCondicionBusqueda(editable.toString());
+                contactoViewModel.setNombre(editable.toString());
             }
         });
+       /* spnOrdenadoPor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                contactoViewModel.setOrdenarPor((String) adapterView.getItemAtPosition(i));
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                contactoViewModel.setOrdenarPor(ordenadoPor[0]);
+            }
+        });*/
     }
 
     @Override
