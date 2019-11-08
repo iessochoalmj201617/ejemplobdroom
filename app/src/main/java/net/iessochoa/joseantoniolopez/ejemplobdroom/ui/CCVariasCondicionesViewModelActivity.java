@@ -7,18 +7,22 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.CCVariasCondicionesViewModel;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
@@ -27,6 +31,8 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
     private CCVariasCondicionesViewModel contactoViewModel;
     private Button btnNuevo;
     private EditText etBuscar;
+    private TextView tvFechaNacimiento;
+    Calendar calendar = Calendar.getInstance();
     //final String[] ordenadoPor =
     //        new String[]{Contacto.NOMBRE,Contacto.APELLIDO,Contacto.FECHA_NACIMIENTO};
 //    final String[] ordenadoPor =
@@ -38,6 +44,7 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_varias_condiciones_view_model);
 
         etBuscar=findViewById(R.id.etBuscar);
+        tvFechaNacimiento=findViewById(R.id.tvFechaNacimiento);
 
         //************SPINNER******************
        /* spnOrdenadoPor=findViewById(R.id.spnOrdenadoPor);
@@ -131,5 +138,26 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
             contactoViewModel.insert(contacto);
         }
 
+    }
+    /**
+     * nos permite abrir un calendario para seleccionar la fecha
+     */
+    public void onClickFecha(View view) {
+        Calendar newCalendar = Calendar.getInstance();
+
+        final String fecha = "";
+        //final SimpleDateFormat finalDateFormatter = dateFormatter;
+        DatePickerDialog dialogo = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                calendar.set(year, monthOfYear, dayOfMonth);
+                tvFechaNacimiento.setText(year+"/"+ monthOfYear+"/"+dayOfMonth);
+                contactoViewModel.
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        dialogo.show();
     }
 }

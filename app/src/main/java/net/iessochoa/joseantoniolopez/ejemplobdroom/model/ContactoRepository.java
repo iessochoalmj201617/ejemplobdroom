@@ -8,6 +8,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
+import java.util.Date;
 import java.util.List;
 
 public class ContactoRepository {
@@ -32,6 +33,10 @@ public class ContactoRepository {
     }
     public LiveData<List<Contacto>> getContactosOrderBy(String ordenadoPor){
         mAllContactos=mContactoDao.getContactosOrdenadoPor(ordenadoPor);
+        return mAllContactos;
+    }
+    public LiveData<List<Contacto>> getByNombreFecha(String nombre, Date menorQue){
+        mAllContactos=mContactoDao.findByNombreFecha(nombre,menorQue);
         return mAllContactos;
     }
     /*public LiveData<List<Contacto>> getContactosOrderByRaw(String ordenadoPor){
