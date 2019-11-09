@@ -36,7 +36,7 @@ public interface ContactoDao {
     //todos los contactos
     @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY apellido")
     LiveData<List<Contacto>> getAllContactos();
-    //Todos los contactos ordenado por nombre o apellido o fecha pasado por parámetro
+    //NO FUNCIONA-->Todos los contactos ordenado por nombre o apellido o fecha pasado por parámetro
     @Query("SELECT * FROM contacto ORDER BY :ordenadoPor ASC")
     LiveData<List<Contacto>> getContactosOrdenadoPor(String ordenadoPor);
     //Aquellos contactos que coincide con la condición
@@ -48,18 +48,17 @@ public interface ContactoDao {
     //aquellos contactos menores que la fecha pasada por parámetro
     @Query("SELECT * FROM contacto WHERE fechanacimiento <= :fechaNacimiento")
     LiveData<List<Contacto>> contactosMenoresQue(Date fechaNacimiento);
-    //aquellos contactos que coinciden con la condición y ordenado por.
-    //NOTA: No funciona el parámetro en ORDER BY
-    @Query("SELECT * FROM contacto where nombre LIKE  :nombre OR apellido LIKE :nombre" +
-                    " ORDER BY :ordenadoPor")
-    LiveData<List<Contacto>> findByNombreOrderBy(String nombre,String ordenadoPor);
+
+
     //lista por nombre y fecha de nacimiento menor que
     @Query("SELECT * FROM contacto where (nombre LIKE  :nombre OR apellido LIKE :nombre)" +
             " AND (fechanacimiento <= :menorQue)")
     LiveData<List<Contacto>> findByNombreFecha(String nombre,Date menorQue);
-   /* @RawQuery
-    LiveData<Contacto> ordenadoPorRaw(SupportSQLiteDatabase query);*/
-
+   //LISTAS ORDENADO POR
+   @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY nombre,apellido")
+   LiveData<List<Contacto>> getContactosOrderByNombre();
+    @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY fechanacimiento")
+    LiveData<List<Contacto>> getContactosOrderByFecha();
 
 
 

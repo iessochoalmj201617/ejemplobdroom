@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EjemploBDRoom</string>
+    <string name="title_activity_ddordenar_por">DDOrdenarPorActivity</string>
 </resources>

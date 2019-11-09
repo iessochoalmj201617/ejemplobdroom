@@ -4,9 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.SupportSQLiteQuery;
+
 
 import java.util.Date;
 import java.util.List;
@@ -27,10 +25,7 @@ public class ContactoRepository {
         mAllContactos=mContactoDao.findByNombre(nombre);
         return mAllContactos;
     }
-    public LiveData<List<Contacto>> getByNombreOrderBy(String nombre,String ordenadoPor){
-        mAllContactos=mContactoDao.findByNombreOrderBy(nombre,ordenadoPor);
-        return mAllContactos;
-    }
+
     public LiveData<List<Contacto>> getContactosOrderBy(String ordenadoPor){
         mAllContactos=mContactoDao.getContactosOrdenadoPor(ordenadoPor);
         return mAllContactos;
@@ -39,12 +34,15 @@ public class ContactoRepository {
         mAllContactos=mContactoDao.findByNombreFecha(nombre,menorQue);
         return mAllContactos;
     }
-    /*public LiveData<List<Contacto>> getContactosOrderByRaw(String ordenadoPor){
-        String query="SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY "+ordenadoPor+" ASC";
-        mAllContactos=mContactoDao.ordenadoPorRaw(new SimpleSQLiteQuery(query) {
-        });
+    //lista ordenado por columnas diferentes
+    public LiveData<List<Contacto>> getContactosOrderByNombre(){
+        mAllContactos=mContactoDao.getContactosOrderByNombre();
         return mAllContactos;
-    }*/
+    }
+    public LiveData<List<Contacto>> getContactosOrderByFecha(){
+        mAllContactos=mContactoDao.getContactosOrderByFecha();
+        return mAllContactos;
+    }
     /*
     Insertar nos obliga a crear tarea en segundo plano
      */
