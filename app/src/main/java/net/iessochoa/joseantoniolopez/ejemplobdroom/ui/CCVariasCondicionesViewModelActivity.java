@@ -41,18 +41,12 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_varias_condiciones_view_model);
+        setContentView(R.layout.activity_ccvarias_condiciones_view_model);
 
         etBuscar=findViewById(R.id.etBuscar);
         tvFechaNacimiento=findViewById(R.id.tvFechaNacimiento);
 
-        //************SPINNER******************
-       /* spnOrdenadoPor=findViewById(R.id.spnOrdenadoPor);
-        final ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, ordenadoPor);
-        adaptador.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item);
-        spnOrdenadoPor.setAdapter(adaptador);*/
+
         //************RECYCLERVIEW******************
         RecyclerView recyclerView = findViewById(R.id.rvListaContactos);
         //creamos el adaptador
@@ -89,8 +83,8 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
         /***********OBSERVERS*****************************
          el livedata cuando cambian las condiciones de busqueda actualiza la query
          . En nuestro caso vamos
-        a probar como al modificar el texto de busqueda por nombre, se modifica el Livedata de la lista
-        Para ello, fijaros en la clase CondicioBusquedaViewModel, la clase Transformation
+        a probar como al modificar el texto de busqueda por nombre, cambiamos el LiveData des HashMap que mediante swichMap modifica el Livedata de la lista
+        Para ello, fijaros en la clase CondicioBusquedaViewModelpe
          */
         //Asignamos el observador a la busqueda hecha. Si hay cambios actualizamos el adaptador
         contactoViewModel.getListContactosLiveData().observe(this, new Observer<List<Contacto>>() {
@@ -116,45 +110,36 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
                 contactoViewModel.setNombre(editable.toString());
             }
         });
-       /* spnOrdenadoPor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                contactoViewModel.setOrdenarPor((String) adapterView.getItemAtPosition(i));
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                contactoViewModel.setOrdenarPor(ordenadoPor[0]);
-            }
-        });*/
     }
-
+/*NUEVO CONTACTO*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==NUEVO_CONTACTO_REQUEST_CODE && resultCode==RESULT_OK){
             Contacto contacto=(Contacto) data.getSerializableExtra(NuevoContactoActivity.EXTRA_CONTACTO);
+            //La insercción causa una modificación en el LiveData y el observador modificará el RecyclerView
             contactoViewModel.insert(contacto);
         }
 
     }
     /**
-     * nos permite abrir un calendario para seleccionar la fecha
+     * nos permite abrir un calendario para seleccionar la fecha y modificar la condición de
+     * busqueda
      */
     public void onClickFecha(View view) {
         Calendar newCalendar = Calendar.getInstance();
 
-        final String fecha = "";
-        //final SimpleDateFormat finalDateFormatter = dateFormatter;
         DatePickerDialog dialogo = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
                 calendar.set(year, monthOfYear, dayOfMonth);
-                tvFechaNacimiento.setText(year+"/"+ monthOfYear+"/"+dayOfMonth);
-                contactoViewModel.
+                tvFechaNacimiento.setText(dayOfMonth+"/"+ monthOfYear+"/"+year);
+                //al igual que al cambiar el nombre, modificamos el LiveData de condición de busqueda
+                //que provocará la modificación del LiveData de la Query Sql
+                contactoViewModel.setFechaMenorQue(calendar.getTime());
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));

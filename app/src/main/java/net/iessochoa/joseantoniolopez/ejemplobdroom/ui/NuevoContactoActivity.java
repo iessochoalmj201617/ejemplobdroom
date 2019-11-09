@@ -16,7 +16,9 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
 
 import java.util.Calendar;
 import java.util.Date;
-
+/*
+Crea un nuevo contacto y lo devuelve a la actividad
+ */
 public class NuevoContactoActivity extends AppCompatActivity {
     public static final String EXTRA_CONTACTO="net.iessochoa.joseantoniolopez.ejemplobdroom.ui.contacto";
     private EditText etNombre;
@@ -64,15 +66,13 @@ public class NuevoContactoActivity extends AppCompatActivity {
     public void onClickFecha(View view) {
         Calendar newCalendar = Calendar.getInstance();
 
-        final String fecha = "";
-        //final SimpleDateFormat finalDateFormatter = dateFormatter;
         DatePickerDialog dialogo = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                 calendar.set(year, monthOfYear, dayOfMonth);
-                tvFechaNacimiento.setText(year+"/"+ monthOfYear+"/"+dayOfMonth);
+                tvFechaNacimiento.setText(dayOfMonth+"/"+ monthOfYear+"/"+year);
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));

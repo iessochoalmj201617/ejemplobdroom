@@ -31,7 +31,7 @@ public class BBCondicionBusquedaViewModelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_condicion_busqueda_view_model);
+        setContentView(R.layout.activity_bbcondicion_busqueda_view_model);
 
 
         etBuscar=findViewById(R.id.etBuscar);
@@ -98,6 +98,7 @@ public class BBCondicionBusquedaViewModelActivity extends AppCompatActivity {
         });
 
     }
+    /*NUEVO CONTACTO*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -105,6 +106,7 @@ public class BBCondicionBusquedaViewModelActivity extends AppCompatActivity {
 
         if(requestCode==NUEVO_CONTACTO_REQUEST_CODE && resultCode==RESULT_OK){
             Contacto contacto=(Contacto) data.getSerializableExtra(NuevoContactoActivity.EXTRA_CONTACTO);
+            //La insercción causa una modificación en el LiveData y el observador modificará el RecyclerView
             contactoViewModel.insert(contacto);
         }
 

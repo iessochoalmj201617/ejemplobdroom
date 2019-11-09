@@ -27,7 +27,7 @@ public class AABasicoViewModelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_basico_view_model);
+        setContentView(R.layout.activity_aabasico_view_model);
 
        //RECYCLER_VIEW
         RecyclerView rvListaContactos = findViewById(R.id.rvListaContactos);
@@ -80,6 +80,7 @@ NUEVO CONTACTO
 
         if(requestCode==NUEVO_CONTACTO_REQUEST_CODE && resultCode==RESULT_OK){
             Contacto contacto=(Contacto) data.getSerializableExtra(NuevoContactoActivity.EXTRA_CONTACTO);
+            //La insercción causa una modificación en el LiveData y el observador modificará el RecyclerView
             contactoViewModel.insert(contacto);
         }
 

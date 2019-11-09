@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.CCVariasCondicionesViewModelActivity"></activity>
+        <activity android:name=".ui.CCVariasCondicionesViewModelActivity" android:windowSoftInputMode="stateHidden"></activity>
         <activity android:name=".ui.BBCondicionBusquedaViewModelActivity" />
         <activity android:name=".ui.AABasicoViewModelActivity" />
         <activity android:name=".ui.NuevoContactoActivity" />
