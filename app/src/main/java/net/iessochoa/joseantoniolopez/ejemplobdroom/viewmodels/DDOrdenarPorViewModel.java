@@ -21,9 +21,9 @@ que utilizar una consulta por cada tipo de ordenación
  */
 public class DDOrdenarPorViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
-//mantenemos el orden actual
-    private String ordenadoPor="nombre";
-//las listas ordenadas por..
+    //mantenemos el orden actual
+    private String ordenadoPor = "nombre";
+    //las listas ordenadas por..
     private LiveData<List<Contacto>> contactosOrdenadoPorNombreLiveData;
     private LiveData<List<Contacto>> contactosOrdenadoPorFechaLiveData;
     //Utilizamos un MediatorLiveData que en función de orden seleccionado asigna un LiveData u otro
@@ -34,28 +34,53 @@ public class DDOrdenarPorViewModel extends AndroidViewModel {
         super(application);
         mRepository = new ContactoRepository(application);
 
-        contactosOrdenadoPorFechaLiveData=mRepository.getContactosOrderByFecha();
-        contactosOrdenadoPorNombreLiveData=mRepository.getContactosOrderByNombre();
+        contactosOrdenadoPorFechaLiveData = mRepository.getContactosOrderByFecha();
+        contactosOrdenadoPorNombreLiveData = mRepository.getContactosOrderByNombre();
 
-        listaContactosMediatorLiveData=new MediatorLiveData<List<Contacto>>();
+        listaContactosMediatorLiveData = new MediatorLiveData<List<Contacto>>();
         listaContactosMediatorLiveData.addSource(contactosOrdenadoPorFechaLiveData, new Observer<List<Contacto>>() {
             @Override
             public void onChanged(List<Contacto> contactos) {
-                listaContactosMediatorLiveData.setValue(ordenadoPorLista());
+                if (ordenadoPor.equals("nombre"))
+                    listaContactosMediatorLiveData.setValue(contactosOrdenadoPorNombreLiveData.getValue());
             }
         });
         listaContactosMediatorLiveData.addSource(contactosOrdenadoPorNombreLiveData, new Observer<List<Contacto>>() {
             @Override
             public void onChanged(List<Contacto> contactos) {
-                listaContactosMediatorLiveData.setValue(ordenadoPorLista());
+                if (ordenadoPor.equals("fecha"))
+                    listaContactosMediatorLiveData.setValue(contactosOrdenadoPorFechaLiveData.getValue());
             }
         });
     }
 
-    private List<Contacto> ordenadoPorLista() {
-        if(ordenadoPor.equals("nombre"))
+    /*private List<Contacto> ordenadoPorLista() {
+        if (ordenadoPor.equals("nombre"))
             return contactosOrdenadoPorNombreLiveData.getValue();
         else
             return contactosOrdenadoPorFechaLiveData.getValue();
+    }*/
+
+    public MediatorLiveData<List<Contacto>> getAllContactos() {
+        return listaContactosMediatorLiveData;
+    }
+
+    public void setOrdenadoPor(String ordenActual) {
+        ordenadoPor = ordenActual;
+        if (ordenadoPor.equals("nombre"))
+           listaContactosMediatorLiveData.setValue(contactosOrdenadoPorNombreLiveData.getValue());
+        else
+            listaContactosMediatorLiveData.setValue(contactosOrdenadoPorFechaLiveData.getValue());
+    }
+
+    //Inserción y borrado que se reflejará automáticamente gracias al observador creado en la
+    //actividad
+    public void insert(Contacto contacto) {
+        mRepository.insert(contacto);
+    }
+
+    public void delete(Contacto contacto) {
+        mRepository.delete(contacto);
+
     }
 }

@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnBasico;
     private Button btnCondicionBusqueda;
     private Button btnVariasCondicionesBusqueda;
+    private Button btnOrdenadoPor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         btnBasico=findViewById(R.id.btnBasico);
         btnCondicionBusqueda=findViewById(R.id.btnBusqueda);
         btnVariasCondicionesBusqueda=findViewById(R.id.btnVariasCondiciones);
+        btnOrdenadoPor=findViewById(R.id.btnOdenadoPor);
 
         View.OnClickListener onClickListener=new View.OnClickListener() {
             private View view;
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.btnVariasCondiciones:
                         intent  =new Intent(MainActivity.this, CCVariasCondicionesViewModelActivity.class);
                         break;
+                    case  R.id.btnOdenadoPor:
+                        intent  =new Intent(MainActivity.this, DDOrdenarPorActivity.class);
+                        break;
                 }
                 startActivity(intent);
             }
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
          btnBasico.setOnClickListener(onClickListener);
          btnCondicionBusqueda.setOnClickListener(onClickListener);
          btnVariasCondicionesBusqueda.setOnClickListener(onClickListener);
+         btnOrdenadoPor.setOnClickListener(onClickListener);
 
     }
 }

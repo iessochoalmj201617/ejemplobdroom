@@ -9,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.DDOrdenarPorActivity"></activity>
         <activity
             android:name=".ui.CCVariasCondicionesViewModelActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.BBCondicionBusquedaViewModelActivity"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".ui.BBCondicionBusquedaViewModelActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.AABasicoViewModelActivity" />
         <activity android:name=".ui.NuevoContactoActivity" />
         <activity android:name=".ui.MainActivity">
