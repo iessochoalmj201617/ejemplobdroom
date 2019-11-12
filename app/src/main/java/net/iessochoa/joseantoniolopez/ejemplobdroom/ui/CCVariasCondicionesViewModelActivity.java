@@ -118,7 +118,7 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==NUEVO_CONTACTO_REQUEST_CODE && resultCode==RESULT_OK){
-            Contacto contacto=(Contacto) data.getSerializableExtra(NuevoContactoActivity.EXTRA_CONTACTO);
+            Contacto contacto=(Contacto) data.getParcelableExtra(NuevoContactoActivity.EXTRA_CONTACTO);
             //La insercción causa una modificación en el LiveData y el observador modificará el RecyclerView
             contactoViewModel.insert(contacto);
         }

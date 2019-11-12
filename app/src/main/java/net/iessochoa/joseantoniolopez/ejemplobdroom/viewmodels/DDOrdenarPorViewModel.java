@@ -14,15 +14,29 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
 
 import java.util.List;
 
-//https://proandroiddev.com/mediatorlivedata-to-the-rescue-5d27645b9bc3
 /*
 Room no permite sentencias SQL com parámetro en el Order By, por lo que tendremos
-que utilizar una consulta por cada tipo de ordenación
+que utilizar una consulta por cada tipo de ordenación.
+Vamos utilizar la clase MediatorLiveData
+https://developer.android.com/reference/android/arch/lifecycle/MediatorLiveData
+Esta clase te permite observar un objeto que depende de otros LiveData combinados.
+Nosotros tendremos las dos consultas SQL de ordenación separadas y en funcíon de que
+el usuario elija ordenar por nombre o por fecha, le asignaremos a mediatos el livedata que
+corresponda.
+En la Actividad, observaremos el MediatosLiveData, que cambiaremos cuando se elija fecha o nombre como
+método de ordanación.
+Está basado en el siguiente artículo
+//https://proandroiddev.com/mediatorlivedata-to-the-rescue-5d27645b9bc3
+
  */
 public class DDOrdenarPorViewModel extends AndroidViewModel {
+    //opciones para ordenar
+    public static final String POR_NOMBRE="nombre";
+    public static final String POR_FECHA="fecha";
+
     private ContactoRepository mRepository;
     //mantenemos el orden actual
-    private String ordenadoPor = "nombre";
+    private String ordenadoPor = POR_NOMBRE;
     //las listas ordenadas por..
     private LiveData<List<Contacto>> contactosOrdenadoPorNombreLiveData;
     private LiveData<List<Contacto>> contactosOrdenadoPorFechaLiveData;
@@ -33,41 +47,43 @@ public class DDOrdenarPorViewModel extends AndroidViewModel {
     public DDOrdenarPorViewModel(@NonNull Application application) {
         super(application);
         mRepository = new ContactoRepository(application);
-
+        //recuperamos la listas ordenadas
         contactosOrdenadoPorFechaLiveData = mRepository.getContactosOrderByFecha();
         contactosOrdenadoPorNombreLiveData = mRepository.getContactosOrderByNombre();
 
         listaContactosMediatorLiveData = new MediatorLiveData<List<Contacto>>();
+        //añadimos las dos fuentes posibles
         listaContactosMediatorLiveData.addSource(contactosOrdenadoPorFechaLiveData, new Observer<List<Contacto>>() {
             @Override
             public void onChanged(List<Contacto> contactos) {
-                if (ordenadoPor.equals("nombre"))
-                    listaContactosMediatorLiveData.setValue(contactosOrdenadoPorNombreLiveData.getValue());
+                //como cuando se añada o se elimine un elemento afecta a las dos listas SQL, asignamos la que
+                //corresponda a la actual, ya que se ejecutarán los dos eventos
+                if (ordenadoPor.equals(POR_FECHA))
+                    listaContactosMediatorLiveData.setValue(contactos);
             }
         });
         listaContactosMediatorLiveData.addSource(contactosOrdenadoPorNombreLiveData, new Observer<List<Contacto>>() {
             @Override
             public void onChanged(List<Contacto> contactos) {
-                if (ordenadoPor.equals("fecha"))
-                    listaContactosMediatorLiveData.setValue(contactosOrdenadoPorFechaLiveData.getValue());
+                if (ordenadoPor.equals(POR_NOMBRE))
+                    listaContactosMediatorLiveData.setValue(contactos);
             }
         });
     }
 
-    /*private List<Contacto> ordenadoPorLista() {
-        if (ordenadoPor.equals("nombre"))
-            return contactosOrdenadoPorNombreLiveData.getValue();
-        else
-            return contactosOrdenadoPorFechaLiveData.getValue();
-    }*/
+
 
     public MediatorLiveData<List<Contacto>> getAllContactos() {
         return listaContactosMediatorLiveData;
     }
 
+    /**
+     * Nos permite asignar el orden actual de la lista
+     * @param ordenActual
+     */
     public void setOrdenadoPor(String ordenActual) {
         ordenadoPor = ordenActual;
-        if (ordenadoPor.equals("nombre"))
+        if (ordenadoPor.equals(POR_NOMBRE))
            listaContactosMediatorLiveData.setValue(contactosOrdenadoPorNombreLiveData.getValue());
         else
             listaContactosMediatorLiveData.setValue(contactosOrdenadoPorFechaLiveData.getValue());

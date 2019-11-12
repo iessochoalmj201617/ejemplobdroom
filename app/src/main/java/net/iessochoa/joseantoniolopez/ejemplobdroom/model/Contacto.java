@@ -1,5 +1,7 @@
 package net.iessochoa.joseantoniolopez.ejemplobdroom.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,7 @@ import java.util.Locale;
 // https://developer.android.com/training/data-storage/room/defining-data.html#java
 //https://codelabs.developers.google.com/codelabs/android-room-with-a-view
 @Entity(tableName = Contacto.TABLE_NAME)
-public class Contacto implements Serializable {
+public class Contacto implements Parcelable {
     public static final String TABLE_NAME="contacto";
     public static final String ID= BaseColumns._ID;
     public static final String NOMBRE="nombre";
@@ -105,4 +107,39 @@ public class Contacto implements Serializable {
         DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
         return  mNombre + " " + mApellido + " "+ mNumTelefono + ' ' + df.format(mFechaNacimiento) ;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.mNombre);
+        dest.writeString(this.mApellido);
+        dest.writeString(this.mNumTelefono);
+        dest.writeLong(this.mFechaNacimiento != null ? this.mFechaNacimiento.getTime() : -1);
+    }
+
+    protected Contacto(Parcel in) {
+        this.id = in.readInt();
+        this.mNombre = in.readString();
+        this.mApellido = in.readString();
+        this.mNumTelefono = in.readString();
+        long tmpMFechaNacimiento = in.readLong();
+        this.mFechaNacimiento = tmpMFechaNacimiento == -1 ? null : new Date(tmpMFechaNacimiento);
+    }
+
+    public static final Parcelable.Creator<Contacto> CREATOR = new Parcelable.Creator<Contacto>() {
+        @Override
+        public Contacto createFromParcel(Parcel source) {
+            return new Contacto(source);
+        }
+
+        @Override
+        public Contacto[] newArray(int size) {
+            return new Contacto[size];
+        }
+    };
 }
