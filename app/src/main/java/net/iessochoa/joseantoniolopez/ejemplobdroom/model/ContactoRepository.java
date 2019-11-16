@@ -26,10 +26,7 @@ public class ContactoRepository {
         return mAllContactos;
     }
 
-    public LiveData<List<Contacto>> getContactosOrderBy(String ordenadoPor){
-        mAllContactos=mContactoDao.getContactosOrdenadoPor(ordenadoPor);
-        return mAllContactos;
-    }
+
     public LiveData<List<Contacto>> getByNombreFecha(String nombre, Date menorQue){
         mAllContactos=mContactoDao.findByNombreFecha(nombre,menorQue);
         return mAllContactos;
