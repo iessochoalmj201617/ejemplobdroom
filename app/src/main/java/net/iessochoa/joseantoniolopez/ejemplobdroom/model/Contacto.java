@@ -7,6 +7,7 @@ import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -18,7 +19,8 @@ import java.util.Locale;
 //para ver los usos de las anotaciones de Entity
 // https://developer.android.com/training/data-storage/room/defining-data.html#java
 //https://codelabs.developers.google.com/codelabs/android-room-with-a-view
-@Entity(tableName = Contacto.TABLE_NAME)
+@Entity(tableName = Contacto.TABLE_NAME,//nombre de la tabla
+indices = {@Index(value = {Contacto.APELLIDO,Contacto.NOMBRE},unique = true)})//creamos un indice y no dejamos la repeticion
 public class Contacto implements Parcelable {
     public static final String TABLE_NAME="contacto";
     public static final String ID= BaseColumns._ID;
