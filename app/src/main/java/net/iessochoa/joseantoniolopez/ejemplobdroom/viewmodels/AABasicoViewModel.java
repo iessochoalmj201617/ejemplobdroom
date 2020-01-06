@@ -12,7 +12,7 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
 import java.util.List;
 
 /**
- *
+ *https://developer.android.com/topic/libraries/architecture/viewmodel
  */
 public class AABasicoViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;

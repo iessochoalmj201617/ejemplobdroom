@@ -16,7 +16,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-//https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7
+//En este ejemplo haremos algo parecido que en el B pero con dos condiciones diferentes
+//Para conseguirlo, utilizaremos un livedata de tipo HashMap con dos valores, uno para
+//cada condición. Si cambia uno de ellos, actualizará la sentencia SQL mediante la clase
+//Transformation
+// https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7
 public class CCVariasCondicionesViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
     //utilizamos un HashMap con dos elementos: el primero nos sirve

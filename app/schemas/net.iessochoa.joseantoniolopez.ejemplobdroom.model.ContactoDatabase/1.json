@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "83ed12ad5e09aa0e371298f67782a4b2",
+    "identityHash": "2a4346d3c92842ed8b36f5672ebf4660",
     "entities": [
       {
         "tableName": "contacto",
@@ -33,7 +33,7 @@
             "notNull": true
           },
           {
-            "fieldPath": "mfechaNacimiento",
+            "fieldPath": "mFechaNacimiento",
             "columnName": "fechanacimiento",
             "affinity": "INTEGER",
             "notNull": true
@@ -45,13 +45,23 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_contacto_apellido_nombre",
+            "unique": true,
+            "columnNames": [
+              "apellido",
+              "nombre"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_contacto_apellido_nombre` ON `${TABLE_NAME}` (`apellido`, `nombre`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"83ed12ad5e09aa0e371298f67782a4b2\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2a4346d3c92842ed8b36f5672ebf4660\")"
     ]
   }
 }

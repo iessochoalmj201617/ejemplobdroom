@@ -16,12 +16,13 @@ import java.util.List;
 
 /*
 Room no permite sentencias SQL com parámetro en el Order By, por lo que tendremos
-que utilizar una consulta por cada tipo de ordenación.
+que utilizar una consulta por cada tipo de ordenación si queremos que el usuario pueda
+mostras los datos ordenados por diferentes campos.
 Vamos utilizar la clase MediatorLiveData
 https://developer.android.com/reference/android/arch/lifecycle/MediatorLiveData
 Esta clase te permite observar un objeto que depende de otros LiveData combinados.
 Nosotros tendremos las dos consultas SQL de ordenación separadas y en funcíon de que
-el usuario elija ordenar por nombre o por fecha, le asignaremos a mediatos el livedata que
+el usuario elija ordenar por nombre o por fecha, le asignaremos a mediator el livedata que
 corresponda.
 En la Actividad, observaremos el MediatosLiveData, que cambiaremos cuando se elija fecha o nombre como
 método de ordanación.

@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.Date;
 import java.util.List;
-
+//https://developer.android.com/training/data-storage/room/accessing-data
 @Dao
 public interface ContactoDao {
     //nuevo contacto sustituyendo si ya existe

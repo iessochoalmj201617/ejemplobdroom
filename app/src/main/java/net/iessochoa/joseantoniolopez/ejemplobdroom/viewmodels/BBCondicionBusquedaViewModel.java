@@ -14,6 +14,12 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
 
 import java.util.List;
 
+/**
+ * https://www.it-swarm.net/es/android/como-y-donde-usar-transformations.switchmap/834875192/
+ * En este caso, la sentencia sql depende de otro campo en el que el usuario puede realizar
+ * una búsqueda, por lo tenemos la clase Transformation que nos permite modificar la condición
+ * SQL cuando cuambien el campo de busqueda que a su vez es un livedata
+ */
 public class BBCondicionBusquedaViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
     //LiveData que depende de otros elementos
@@ -32,9 +38,10 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
         //switchMap nos me permite cambiar el livedata de la consulta SQL
         // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
         listaContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<String, LiveData<List<Contacto>>>() {
+            //cuando cambie condicionBusquedaLivedata, se llamará a esta función con el valor
+            //nuevo en el parámetro nombre
             @Override
             public LiveData<List<Contacto>> apply(String nombre) {
-
                 return mRepository.getByNombre("%"+nombre+"%");
             }
         });
@@ -44,7 +51,7 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
         return listaContactosLiveData;
     }
     public void setCondicionBusqueda(String condicionBusqueda) {
-        //this.condicionBusqueda = condicionBusqueda;
+
         condicionBusquedaLiveData.setValue(condicionBusqueda);
     }
     //Inserción y borrado que se reflejará automáticamente gracias al observador creado en la

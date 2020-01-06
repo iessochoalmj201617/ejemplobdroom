@@ -17,7 +17,8 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.AABasicoViewModel;
 
 import java.util.List;
-
+/*
+ */
 public class AABasicoViewModelActivity extends AppCompatActivity {
     public static final int NUEVO_CONTACTO_REQUEST_CODE = 1;
 

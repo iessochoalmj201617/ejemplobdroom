@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 /**
  * Esta clase nos comunica con SQLite. Mantenemos una sola instancia mediante el patrón
  * Sigleton
+ * https://developer.android.com/training/data-storage/room/prepopulate
  */
 //le indicamos las entidades de la base de datos y la versión
 @Database(entities = {Contacto.class}, version = 1)

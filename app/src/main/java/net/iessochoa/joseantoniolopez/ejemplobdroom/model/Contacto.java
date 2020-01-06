@@ -20,7 +20,7 @@ import java.util.Locale;
 // https://developer.android.com/training/data-storage/room/defining-data.html#java
 //https://codelabs.developers.google.com/codelabs/android-room-with-a-view
 @Entity(tableName = Contacto.TABLE_NAME,//nombre de la tabla
-indices = {@Index(value = {Contacto.APELLIDO,Contacto.NOMBRE},unique = true)})//creamos un indice y no dejamos la repeticion
+indices = {@Index(value = {Contacto.APELLIDO,Contacto.NOMBRE},unique = true)})//creamos un indice y es clave alternativa
 public class Contacto implements Parcelable {
     public static final String TABLE_NAME="contacto";
     public static final String ID= BaseColumns._ID;
