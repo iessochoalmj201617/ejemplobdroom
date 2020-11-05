@@ -3,6 +3,7 @@ package net.iessochoa.joseantoniolopez.ejemplobdroom.ui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.RadioGroup;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.AABasicoViewModel;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.CCVariasCondicionesViewModel;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.DDOrdenarPorViewModel;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
         rvListaContactos.setLayoutManager(new LinearLayoutManager(this));
         //VIEW_MODEL
         //Recuperamos el ViewModel
-        contactoViewModel= ViewModelProviders.of(this).get(DDOrdenarPorViewModel.class);
+        contactoViewModel= new ViewModelProvider(this).get(DDOrdenarPorViewModel.class);
         //Este livedata nos permite ver todos los contactos y en caso de que haya un cambio en la
         //base de datos, se mostrará automáticamente
         contactoViewModel.getAllContactos().observe(this, new Observer<List<Contacto>>() {

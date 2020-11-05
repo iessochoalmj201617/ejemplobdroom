@@ -3,6 +3,7 @@ package net.iessochoa.joseantoniolopez.ejemplobdroom.ui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.BBCondicionBusquedaViewModel;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.CCVariasCondicionesViewModel;
 
 import java.util.Calendar;
@@ -55,7 +57,7 @@ public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //*********VIEWMODEL******************
-        contactoViewModel= ViewModelProviders.of(this).get(CCVariasCondicionesViewModel.class);
+        contactoViewModel= new ViewModelProvider(this).get(CCVariasCondicionesViewModel.class);
 
 
         //************NUEVO Y BORRADO DE CONTACTO

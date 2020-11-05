@@ -3,6 +3,7 @@ package net.iessochoa.joseantoniolopez.ejemplobdroom.ui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +39,7 @@ public class AABasicoViewModelActivity extends AppCompatActivity {
         rvListaContactos.setLayoutManager(new LinearLayoutManager(this));
         //VIEW_MODEL
         //Recuperamos el ViewModel
-        contactoViewModel= ViewModelProviders.of(this).get(AABasicoViewModel.class);
+        contactoViewModel=  new ViewModelProvider(this).get(AABasicoViewModel.class);
         //Este livedata nos permite ver todos los contactos y en caso de que haya un cambio en la
         //base de datos, se mostrará automáticamente
         contactoViewModel.getAllContactos().observe(this, new Observer<List<Contacto>>() {

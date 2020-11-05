@@ -3,6 +3,7 @@ package net.iessochoa.joseantoniolopez.ejemplobdroom.ui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.AABasicoViewModel;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.BBCondicionBusquedaViewModel;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class BBCondicionBusquedaViewModelActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Recuperamos el ViewModel
-        contactoViewModel= ViewModelProviders.of(this).get(BBCondicionBusquedaViewModel.class);
+        contactoViewModel= new ViewModelProvider(this).get(BBCondicionBusquedaViewModel.class);
 
 
         //Creamos un nuevo contacto mediante otra actividad. Al insestar el nuevo elemento,el observer anterior
