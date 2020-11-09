@@ -33,8 +33,5 @@ public class AABasicoViewModel extends AndroidViewModel {
     public void insert(Contacto contacto){
         mRepository.insert(contacto);
     }
-    public void delete(Contacto contacto){
-        mRepository.delete(contacto);
-
-    }
+    public void delete(Contacto contacto){ mRepository.delete(contacto); }
 }

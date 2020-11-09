@@ -12,6 +12,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Esta clase nos comunica con SQLite. Mantenemos una sola instancia mediante el patrón
@@ -28,7 +30,14 @@ public abstract class ContactoDatabase extends RoomDatabase {
 
     //la base de datos
     private static volatile ContactoDatabase INSTANCE;
-
+    //para el manejo de base de datos con room necesitamos realzar las tareas CRUD en hilos,
+    //las consultas Select que devuelve LiveData, Room crea los hilos automáticamente, pero para las
+    //insercciones, acutalizaciones y borrado, tenemos que crear el hilo nosotros
+    //Utilizaremos ExecutorService para el control de los hilos. Para saber más información de la clase
+    //https://www.youtube.com/watch?v=Hc5xo-JjIMQ
+    private static final int NUMBER_OF_THREADS = 4;
+    static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     static ContactoDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (ContactoDatabase.class) {
@@ -53,7 +62,25 @@ public abstract class ContactoDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            new PopulateDbAsync(INSTANCE).execute();
+           // new PopulateDbAsync(INSTANCE).execute();
+            //creamos algunos contactos en un hilo
+            databaseWriteExecutor.execute(()->{
+                //obtenemos la base de datos
+                ContactoDao mDao=INSTANCE.contactoDao();
+                SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd-MM-yyyy");
+                Contacto contacto = null;
+                //creamos unos contactos
+                try {
+                    contacto = new Contacto("Pepe", "Lopez", "8888888", formatoDelTexto.parse("12-3-2000"));
+                    mDao.insert(contacto);
+                    contacto = new Contacto("Maria", "Perez", "6666666", formatoDelTexto.parse("12-3-2002"));
+                    mDao.insert(contacto);
+                    contacto = new Contacto("Juan", "Pomez", "66633333", formatoDelTexto.parse("12-3-2005"));
+                    mDao.insert(contacto);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         @Override
@@ -63,34 +90,4 @@ public abstract class ContactoDatabase extends RoomDatabase {
         }
     };
 
-    //tarea en segundo plano que carga los datos
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-
-        private final ContactoDao mDao;
-
-        PopulateDbAsync(ContactoDatabase db) {
-            mDao = db.contactoDao();
-        }
-//código que se ejecuta en segundo plano
-        @Override
-        protected Void doInBackground(final Void... params) {
-            // Start the app with a clean database every time.
-            // Not needed if you only populate on creation.
-           // mDao.deleteAll();
-            // añadimos unos datos de ejemplo
-            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd-MM-yyyy");
-            Contacto contacto = null;
-            try {
-                contacto = new Contacto("Pepe", "Lopez", "8888888", formatoDelTexto.parse("12-3-2000"));
-                mDao.insert(contacto);
-                contacto = new Contacto("Maria", "Perez", "6666666", formatoDelTexto.parse("12-3-2002"));
-                mDao.insert(contacto);
-                contacto = new Contacto("Juan", "Pomez", "66633333", formatoDelTexto.parse("12-3-2005"));
-                mDao.insert(contacto);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
 }

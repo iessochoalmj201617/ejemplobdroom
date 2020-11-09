@@ -41,41 +41,25 @@ public class ContactoRepository {
         return mAllContactos;
     }
     /*
-    Insertar nos obliga a crear tarea en segundo plano
+    Insertar: nos obliga a crear tarea en segundo plano
      */
     public void insert(Contacto contacto){
-        new inserAsyncTask(mContactoDao).execute(contacto);
+      //administramos el hilo con el Executor
+        ContactoDatabase.databaseWriteExecutor.execute(()->{
+            mContactoDao.insert(contacto);
+        });
+
+
     }
 
-    private static class inserAsyncTask extends AsyncTask<Contacto,Void,Void> {
-       private ContactoDao mAsyncTaskDao;
-        public inserAsyncTask(ContactoDao mContactoDao) {
-            mAsyncTaskDao=mContactoDao;
-        }
-
-        @Override
-        protected Void doInBackground(Contacto... contactos) {
-            mAsyncTaskDao.insert(contactos[0]);
-            return null;
-        }
-    }
 /*
-Borrar
+Borrar: nos obliga a crear tarea en segundo plano
  */
     public void delete(Contacto contacto){
-        new deleteAsyncTask(mContactoDao).execute(contacto);
-    }
-    private static class deleteAsyncTask extends AsyncTask<Contacto,Void,Void> {
-        private ContactoDao mAsyncTaskDao;
-        public deleteAsyncTask(ContactoDao mContactoDao) {
-            mAsyncTaskDao=mContactoDao;
-        }
-
-        @Override
-        protected Void doInBackground(Contacto... contactos) {
-            mAsyncTaskDao.deleteByContacto(contactos[0]);
-            return null;
-        }
+        //administramos el hilo con el Executor
+        ContactoDatabase.databaseWriteExecutor.execute(()->{
+            mContactoDao.deleteByContacto(contacto);
+        });
     }
     /*public void deleteById(int id){
         mContactoDao.deleteByContactoId(id);

@@ -59,6 +59,8 @@ public interface ContactoDao {
    LiveData<List<Contacto>> getContactosOrderByNombre();
     @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY fechanacimiento")
     LiveData<List<Contacto>> getContactosOrderByFecha();
+    @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY :orderby")
+    LiveData<List<Contacto>> getContactosOrderByFecha2(String orderby);
 
 
 

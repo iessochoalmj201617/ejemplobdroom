@@ -32,8 +32,8 @@ Está basado en el siguiente artículo
  */
 public class DDOrdenarPorViewModel extends AndroidViewModel {
     //opciones para ordenar
-    public static final String POR_NOMBRE="nombre";
-    public static final String POR_FECHA="fecha";
+    public static final String POR_NOMBRE=Contacto.NOMBRE;
+    public static final String POR_FECHA=Contacto.FECHA_NACIMIENTO;
 
     private ContactoRepository mRepository;
     //mantenemos el orden actual
