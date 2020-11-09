@@ -59,8 +59,19 @@ public interface ContactoDao {
    LiveData<List<Contacto>> getContactosOrderByNombre();
     @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY fechanacimiento")
     LiveData<List<Contacto>> getContactosOrderByFecha();
+    //OJO: asi no funciona. El motivo es evitar inyección de SQL
     @Query("SELECT * FROM "+Contacto.TABLE_NAME+" ORDER BY :orderby")
     LiveData<List<Contacto>> getContactosOrderByFecha2(String orderby);
+    //******************
+    //Este método nos permite parametrizar el orden en que se muestra la lista
+    @Query("SELECT * FROM  " +Contacto.TABLE_NAME +
+            " ORDER BY " +
+            "CASE WHEN :sort_by = 'fechanacimiento' AND :sort = 'ASC' THEN fechanacimiento END ASC, " +
+            "CASE WHEN :sort_by = 'fechanacimiento' AND :sort = 'DESC' THEN fechanacimiento END DESC, " +
+            "CASE WHEN :sort_by = 'nombre'   AND :sort = 'ASC' THEN apellido END ASC, "+
+            "CASE WHEN :sort_by = 'nombre'   AND :sort = 'DESC' THEN apellido END DESC"
+    )
+    LiveData<List<Contacto>> getContactosOrderBy(String sort_by, String sort);
 
 
 

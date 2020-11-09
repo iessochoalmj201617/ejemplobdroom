@@ -40,6 +40,10 @@ public class ContactoRepository {
         mAllContactos=mContactoDao.getContactosOrderByFecha();
         return mAllContactos;
     }
+    public LiveData<List<Contacto>> getContactosOrderBy(String order_by, String order){
+        mAllContactos=mContactoDao.getContactosOrderBy(order_by, order);
+        return mAllContactos;
+    }
     /*
     Insertar: nos obliga a crear tarea en segundo plano
      */

@@ -28,6 +28,7 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
     private DDOrdenarPorViewModel contactoViewModel;
     private Button btnNuevo;
     private RadioGroup rgOrden;
+    private RadioGroup rgAscDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ddordenar_por);
 
         rgOrden=findViewById(R.id.rgOrden);
+        rgAscDesc=findViewById(R.id.rgAscDes);
 
         //RECYCLER_VIEW
         RecyclerView rvListaContactos = findViewById(R.id.rvListaContactos);
@@ -54,21 +56,34 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
             }
         });
 
-        //CAMBIO DE ORDEN DE LA LISTA
+        //CAMBIO DE ORDEN DE LA LISTA por fecha y nombre
         rgOrden.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.rbtPorFecha:
-                        contactoViewModel.setOrdenadoPor(DDOrdenarPorViewModel.POR_FECHA);
+                        contactoViewModel.setOrderBy(DDOrdenarPorViewModel.OrderBy.FECHA);
                         break;
                     case R.id.rbtPorNombre:
-                        contactoViewModel.setOrdenadoPor(DDOrdenarPorViewModel.POR_NOMBRE);
+                        contactoViewModel.setOrderBy(DDOrdenarPorViewModel.OrderBy.NOMBRE);
                 }
 
             }
         });
+        //cambia el orden ASC y DESC
+        rgAscDesc.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.rbAsc:
+                        contactoViewModel.setOrder(DDOrdenarPorViewModel.Order.ASC);
+                        break;
+                    case R.id.rbDesc:
+                        contactoViewModel.setOrder(DDOrdenarPorViewModel.Order.DESC);
+                }
 
+            }
+        });
         rgOrden.check(R.id.rbtPorNombre);
 
         //NUEVO_CONTACTO

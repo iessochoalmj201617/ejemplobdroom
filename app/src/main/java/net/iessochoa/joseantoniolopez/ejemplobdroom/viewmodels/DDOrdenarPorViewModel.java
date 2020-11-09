@@ -3,15 +3,20 @@ package net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /*
@@ -31,72 +36,97 @@ Está basado en el siguiente artículo
 
  */
 public class DDOrdenarPorViewModel extends AndroidViewModel {
-    //opciones para ordenar
-    public static final String POR_NOMBRE=Contacto.NOMBRE;
-    public static final String POR_FECHA=Contacto.FECHA_NACIMIENTO;
-
     private ContactoRepository mRepository;
-    //mantenemos el orden actual
-    private String ordenadoPor = POR_NOMBRE;
-    //las listas ordenadas por..
-    private LiveData<List<Contacto>> contactosOrdenadoPorNombreLiveData;
-    private LiveData<List<Contacto>> contactosOrdenadoPorFechaLiveData;
-    //Utilizamos un MediatorLiveData que en función de orden seleccionado asigna un LiveData u otro
-    private MediatorLiveData<List<Contacto>> listaContactosMediatorLiveData;
+    //utilizamos un HashMap con dos elementos: el primero nos sirve
+    //para buscar por nombre y el segundo será una fecha con la que buscaremos los menores que la fecha
+    private MutableLiveData<HashMap<String,Object>> condicionBusquedaLiveData;
+    //ordenaremos por nombre y por fecha
+    private final String ORDER_BY="order_by";
+    private final String ORDER="order";
+    public static final String ORDENAR_POR_NOMBRE=Contacto.NOMBRE;
+    public static final String ORDENAR_POR_FECHA=Contacto.FECHA_NACIMIENTO;
+    //podremos elegir ascendente y descendente
+    public static final String ORDENAR_ASC="ASC";
+    public static final String ORDENAR_DESC="DESC";
+    public enum OrderBy
+    {
+        NOMBRE, FECHA;
+    }
+    public enum  Order
+    {
+        ASC,DESC;
+    }
 
+
+    //resultado de la consulta SQL, cuando cambien la condición, se activará el observador y actualiza en pantalla el RecyclerView
+    private LiveData<List<Contacto>> listContactosLiveData;
 
     public DDOrdenarPorViewModel(@NonNull Application application) {
         super(application);
-        mRepository = new ContactoRepository(application);
-        //recuperamos la listas ordenadas
-        contactosOrdenadoPorFechaLiveData = mRepository.getContactosOrderByFecha();
-        contactosOrdenadoPorNombreLiveData = mRepository.getContactosOrderByNombre();
+        mRepository=new ContactoRepository(application);
 
-        listaContactosMediatorLiveData = new MediatorLiveData<List<Contacto>>();
-        //añadimos las dos fuentes posibles
-        listaContactosMediatorLiveData.addSource(contactosOrdenadoPorFechaLiveData, new Observer<List<Contacto>>() {
+        condicionBusquedaLiveData =new MutableLiveData<HashMap<String,Object>>();
+        //creamos el LiveData de condición de busqueda. Mantenemos los valores de la condición SQL en una sola
+        //estructura HashMap para que se detecte las modificaciones de cualquiera de las dos
+        HashMap<String, Object> condiciones=new HashMap<String, Object>();
+        //asignamos valores iniciales
+        condiciones.put(ORDER_BY,Contacto.NOMBRE);//toda la agenda
+        condiciones.put(ORDER,ORDENAR_ASC);//fecha actual
+
+        condicionBusquedaLiveData.setValue(condiciones);
+        //switchMap nos  permite cambiar el livedata de la consulta SQL
+        // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
+
+        listContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<HashMap<String,Object>, LiveData<List<Contacto>>>() {
             @Override
-            public void onChanged(List<Contacto> contactos) {
-                //como cuando se añada o se elimine un elemento afecta a las dos listas SQL, asignamos la que
-                //corresponda a la actual, ya que se ejecutarán los dos eventos
-                if (ordenadoPor.equals(POR_FECHA))
-                    listaContactosMediatorLiveData.setValue(contactos);
+            public LiveData<List<Contacto>> apply(HashMap<String,Object> condiciones) {
+
+                return mRepository.getContactosOrderBy((String) condiciones.get(ORDER_BY),(String)condiciones.get(ORDER));
             }
         });
-        listaContactosMediatorLiveData.addSource(contactosOrdenadoPorNombreLiveData, new Observer<List<Contacto>>() {
-            @Override
-            public void onChanged(List<Contacto> contactos) {
-                if (ordenadoPor.equals(POR_NOMBRE))
-                    listaContactosMediatorLiveData.setValue(contactos);
-            }
-        });
+
     }
 
 
-
-    public MediatorLiveData<List<Contacto>> getAllContactos() {
-        return listaContactosMediatorLiveData;
+    /**
+     * Modifica la condición de busqueda
+     * @param orderBy: ordena por Nombre o por fecha
+     */
+    public void setOrderBy(OrderBy orderBy) {
+        HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();
+        String ordenar="";
+        switch (orderBy){
+            case FECHA:
+                ordenar=Contacto.FECHA_NACIMIENTO;
+                break;
+            case NOMBRE:
+                ordenar=Contacto.NOMBRE;
+                break;
+        }
+        condiciones.put(ORDER_BY,ordenar);
+        condicionBusquedaLiveData.setValue(condiciones);
     }
 
     /**
-     * Nos permite asignar el orden actual de la lista
-     * @param ordenActual
+     * Modifica la condición de busqueda
+     * @param order: ordena Ascendente(ASC) o Descendente(DESC)
      */
-    public void setOrdenadoPor(String ordenActual) {
-        ordenadoPor = ordenActual;
-        if (ordenadoPor.equals(POR_NOMBRE))
-           listaContactosMediatorLiveData.setValue(contactosOrdenadoPorNombreLiveData.getValue());
-        else
-            listaContactosMediatorLiveData.setValue(contactosOrdenadoPorFechaLiveData.getValue());
+    public void setOrder(Order order){
+        HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();
+
+        condiciones.put(ORDER,order.toString());
+        condicionBusquedaLiveData.setValue(condiciones);
+    }
+    public LiveData<List<Contacto>> getAllContactos() {
+        return listContactosLiveData;
     }
 
     //Inserción y borrado que se reflejará automáticamente gracias al observador creado en la
     //actividad
-    public void insert(Contacto contacto) {
+    public void insert(Contacto contacto){
         mRepository.insert(contacto);
     }
-
-    public void delete(Contacto contacto) {
+    public void delete(Contacto contacto){
         mRepository.delete(contacto);
 
     }
