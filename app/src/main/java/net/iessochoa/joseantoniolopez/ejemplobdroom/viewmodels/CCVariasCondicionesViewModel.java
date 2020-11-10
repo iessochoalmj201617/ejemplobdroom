@@ -41,7 +41,7 @@ public class CCVariasCondicionesViewModel extends AndroidViewModel {
         //estructura HashMap para que se detecte las modificaciones de cualquiera de las dos
         HashMap<String, Object> condiciones=new HashMap<String, Object>();
         //asignamos valores iniciales
-        condiciones.put(NOMBRE,"%%");//toda la agenda
+        condiciones.put(NOMBRE,"");//toda la agenda
         condiciones.put(FECHA_MENOR_QUE,new Date());//fecha actual
 
         condicionBusquedaLiveData.setValue(condiciones);
@@ -68,7 +68,7 @@ public class CCVariasCondicionesViewModel extends AndroidViewModel {
 
     public void setNombre(String nombre) {
         HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();
-        condiciones.put(NOMBRE,"%"+nombre+"%");
+        condiciones.put(NOMBRE,nombre);
         condicionBusquedaLiveData.setValue(condiciones);
     }
     public LiveData<List<Contacto>> getListContactosLiveData() {

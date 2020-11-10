@@ -40,9 +40,9 @@ public interface ContactoDao {
     @Query("SELECT * FROM contacto ORDER BY :ordenadoPor ASC")
     LiveData<List<Contacto>> getContactosOrdenadoPor(String ordenadoPor);
     //Aquellos contactos que coincide con la condición
-    @Query("SELECT * FROM contacto where nombre LIKE  :nombre OR apellido LIKE :nombre")
+    @Query("SELECT * FROM contacto where nombre LIKE  '%' || :nombre || '%' OR apellido LIKE '%' || :nombre || '%'")
     LiveData<List<Contacto>> findByNombre(String nombre);
-    //número de contáctos
+    //número de contactos
     @Query("SELECT COUNT(*) from contacto")
     int countContactos();
     //aquellos contactos menores que la fecha pasada por parámetro
@@ -51,7 +51,7 @@ public interface ContactoDao {
 
 
     //lista por nombre y fecha de nacimiento menor que
-    @Query("SELECT * FROM contacto where (nombre LIKE  :nombre OR apellido LIKE :nombre)" +
+    @Query("SELECT * FROM contacto where (nombre LIKE  '%' || :nombre || '%' OR apellido LIKE '%' || :nombre || '%')" +
             " AND (fechanacimiento <= :menorQue)")
     LiveData<List<Contacto>> findByNombreFecha(String nombre,Date menorQue);
    //LISTAS ORDENADO POR

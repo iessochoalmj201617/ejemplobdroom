@@ -42,7 +42,7 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
             //nuevo en el parámetro nombre
             @Override
             public LiveData<List<Contacto>> apply(String nombre) {
-                return mRepository.getByNombre("%"+nombre+"%");
+                return mRepository.getByNombre(nombre);
             }
         });
     }
