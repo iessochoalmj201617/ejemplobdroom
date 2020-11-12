@@ -72,6 +72,13 @@ public interface ContactoDao {
             "CASE WHEN :sort_by = 'nombre'   AND :sort = 'DESC' THEN apellido END DESC"
     )
     LiveData<List<Contacto>> getContactosOrderBy(String sort_by, String sort);
+    //Trabajar con RXJava y Room
+    //https://www.youtube.com/watch?v=no6B0ViQizY&t=8s
+    //https://medium.com/androiddevelopers/room-rxjava-acb0cd4f3757
+//RxJava:https://code.tutsplus.com/es/tutorials/reactive-programming-operators-in-rxjava-20--cms-28396
+//https://programacionymas.com/blog/introduccion-rx-java-tutorial-android
+
+
 
 
 
