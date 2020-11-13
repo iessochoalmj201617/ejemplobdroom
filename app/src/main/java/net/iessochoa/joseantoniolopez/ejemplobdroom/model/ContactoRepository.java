@@ -9,6 +9,8 @@ import androidx.lifecycle.LiveData;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Single;
+
 public class ContactoRepository {
     private ContactoDao mContactoDao;
     private LiveData<List<Contacto>> mAllContactos;
@@ -43,6 +45,9 @@ public class ContactoRepository {
     public LiveData<List<Contacto>> getContactosOrderBy(String order_by, String order){
         mAllContactos=mContactoDao.getContactosOrderBy(order_by, order);
         return mAllContactos;
+    }
+    public Single<Integer> geTotalContactos(){
+        return mContactoDao.geTotalContactos();
     }
     /*
     Insertar: nos obliga a crear tarea en segundo plano

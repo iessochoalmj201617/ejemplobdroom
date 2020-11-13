@@ -77,6 +77,10 @@ public abstract class ContactoDatabase extends RoomDatabase {
                     mDao.insert(contacto);
                     contacto = new Contacto("Juan", "Pomez", "66633333", formatoDelTexto.parse("12-3-2005"));
                     mDao.insert(contacto);
+                    contacto = new Contacto("Pili", "Martinez", "66633333", formatoDelTexto.parse("12-3-2004"));
+                    mDao.insert(contacto);
+                    contacto = new Contacto("Fele", "Lillo", "66633333", formatoDelTexto.parse("12-3-2003"));
+                    mDao.insert(contacto);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

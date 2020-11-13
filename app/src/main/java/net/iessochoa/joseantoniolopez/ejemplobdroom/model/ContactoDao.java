@@ -13,6 +13,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.Date;
 import java.util.List;
+
+import io.reactivex.Single;
+
 //https://developer.android.com/training/data-storage/room/accessing-data
 @Dao
 public interface ContactoDao {
@@ -78,7 +81,8 @@ public interface ContactoDao {
 //RxJava:https://code.tutsplus.com/es/tutorials/reactive-programming-operators-in-rxjava-20--cms-28396
 //https://programacionymas.com/blog/introduccion-rx-java-tutorial-android
 
-
+    @Query("SELECT COUNT(*) FROM "+ Contacto.TABLE_NAME)
+    Single<Integer> geTotalContactos();
 
 
 

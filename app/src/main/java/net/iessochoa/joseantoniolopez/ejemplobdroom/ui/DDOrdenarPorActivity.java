@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
@@ -22,6 +23,12 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.DDOrdenarPorViewM
 
 import java.util.List;
 
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class DDOrdenarPorActivity extends AppCompatActivity {
     public static final int NUEVO_CONTACTO_REQUEST_CODE = 1;
 
@@ -29,6 +36,7 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
     private Button btnNuevo;
     private RadioGroup rgOrden;
     private RadioGroup rgAscDesc;
+    private Button btnTotalContactos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,7 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
 
         rgOrden=findViewById(R.id.rgOrden);
         rgAscDesc=findViewById(R.id.rgAscDes);
+        btnTotalContactos=findViewById(R.id.btnTotalContactos);
 
         //RECYCLER_VIEW
         RecyclerView rvListaContactos = findViewById(R.id.rvListaContactos);
@@ -86,6 +95,7 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
         });
         rgOrden.check(R.id.rbtPorNombre);
 
+        btnTotalContactos.setOnClickListener(view -> mostrarTotalContactos());
         //NUEVO_CONTACTO
         //Creamos un nuevo contacto mediante otra actividad. Al insestar el nuevo elemento,el observer anterior
         // nos mostrará el resultado automáticamente
@@ -111,6 +121,32 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * Mediante rxJava vamos a lanzar en un hilo la busqueda y declaramos un observador para que cuando termine podamos
+     * mostrar el resultado
+     */
+    private void mostrarTotalContactos() {
+        contactoViewModel.geTotalContactos()//obtenemos objeto reactivo de un solo uso 'Single' para que haga la consulta en un hilo
+                .subscribeOn(Schedulers.io())//el observable(la consulta sql) se ejecuta en uno diferente
+                .observeOn(AndroidSchedulers.mainThread())//indicamos que el observador es el hilo principal  de Android
+                .subscribe(new SingleObserver<Integer>() { //creamos el observador
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
+
+                    @Override//cuando termine  la consulta de la base de datos recibimos el valor
+                    public void onSuccess(@NonNull Integer contactosTotales) {
+                       Toast.makeText(DDOrdenarPorActivity.this,"Tenemos "+contactosTotales.toString()+" contactos",Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+    }
+
     /*
     NUEVO CONTACTO
      */

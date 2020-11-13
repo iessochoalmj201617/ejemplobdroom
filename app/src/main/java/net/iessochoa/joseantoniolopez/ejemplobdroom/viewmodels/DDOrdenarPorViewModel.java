@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.Single;
+
 /*
 Room no permite sentencias SQL com parámetro en el Order By, por lo que tendremos
 que utilizar una consulta por cada tipo de ordenación si queremos que el usuario pueda
@@ -119,6 +121,10 @@ public class DDOrdenarPorViewModel extends AndroidViewModel {
     }
     public LiveData<List<Contacto>> getAllContactos() {
         return listContactosLiveData;
+    }
+    //rxJava
+    public Single<Integer> geTotalContactos(){
+        return mRepository.geTotalContactos();
     }
 
     //Inserción y borrado que se reflejará automáticamente gracias al observador creado en la
