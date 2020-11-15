@@ -1,10 +1,13 @@
-package net.iessochoa.joseantoniolopez.ejemplobdroom.model;
+package net.iessochoa.joseantoniolopez.ejemplobdroom.repository;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+
+import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoDao;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoDatabase;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +23,7 @@ public class ContactoRepository {
 //singleton
     public static ContactoRepository getInstance(Application application) {
         if (INSTANCE == null) {
-            synchronized (ContactoDatabase.class) {
+            synchronized (ContactoRepository.class) {
                 if (INSTANCE == null) {
                     INSTANCE=new ContactoRepository(application);
                 }

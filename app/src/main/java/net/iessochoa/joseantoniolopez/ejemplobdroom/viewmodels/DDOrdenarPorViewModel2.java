@@ -9,7 +9,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
-import net.iessochoa.joseantoniolopez.ejemplobdroom.model.ContactoRepository;
+import net.iessochoa.joseantoniolopez.ejemplobdroom.repository.ContactoRepository;
 
 import java.util.List;
 

@@ -36,9 +36,9 @@ public abstract class ContactoDatabase extends RoomDatabase {
     //Utilizaremos ExecutorService para el control de los hilos. Para saber más información de la clase
     //https://www.youtube.com/watch?v=Hc5xo-JjIMQ
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
-    static ContactoDatabase getDatabase(final Context context) {
+    public static ContactoDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (ContactoDatabase.class) {
                 if (INSTANCE == null) {
