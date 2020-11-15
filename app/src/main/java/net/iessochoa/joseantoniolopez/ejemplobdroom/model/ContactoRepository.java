@@ -12,12 +12,29 @@ import java.util.List;
 import io.reactivex.Single;
 
 public class ContactoRepository {
+    //implementamos Singleton
+    private static volatile ContactoRepository INSTANCE;
+
     private ContactoDao mContactoDao;
     private LiveData<List<Contacto>> mAllContactos;
+//singleton
+    public static ContactoRepository getInstance(Application application) {
+        if (INSTANCE == null) {
+            synchronized (ContactoDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE=new ContactoRepository(application);
+                }
+            }
+        }
+        return INSTANCE;
+    }
 
-    public ContactoRepository(Application application){
+    private ContactoRepository(Application application){
+        //creamos la base de datos
         ContactoDatabase db=ContactoDatabase.getDatabase(application);
+        //Recuperamos el DAO necesario para el CRUD de la base de datos
         mContactoDao =db.contactoDao();
+        //Recuperamos la lista como un LiveData
         mAllContactos=mContactoDao.getAllContactos();
     }
     public LiveData<List<Contacto>> getAllContactos(){

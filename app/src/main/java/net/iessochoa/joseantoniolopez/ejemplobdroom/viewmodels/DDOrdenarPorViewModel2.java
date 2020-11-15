@@ -46,7 +46,7 @@ public class DDOrdenarPorViewModel2 extends AndroidViewModel {
 
     public DDOrdenarPorViewModel2(@NonNull Application application) {
         super(application);
-        mRepository = new ContactoRepository(application);
+        mRepository = ContactoRepository.getInstance(application);
         //recuperamos la listas ordenadas
         contactosOrdenadoPorFechaLiveData = mRepository.getContactosOrderByFecha();
         contactosOrdenadoPorNombreLiveData = mRepository.getContactosOrderByNombre();

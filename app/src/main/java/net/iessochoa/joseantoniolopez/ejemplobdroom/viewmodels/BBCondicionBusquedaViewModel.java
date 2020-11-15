@@ -29,7 +29,7 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
 
     public BBCondicionBusquedaViewModel(@NonNull Application application) {
         super(application);
-        mRepository=new ContactoRepository(application);
+        mRepository=ContactoRepository.getInstance(application);
 
         //Este Livedata estará asociado al editext de busqueda por nombre
         condicionBusquedaLiveData=new MutableLiveData<String>();

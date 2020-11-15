@@ -19,7 +19,7 @@ public class AABasicoViewModel extends AndroidViewModel {
     private LiveData<List<Contacto>> mAllContactos;
     public AABasicoViewModel(@NonNull Application application) {
         super(application);
-        mRepository=new ContactoRepository(application);
+        mRepository=ContactoRepository.getInstance(application);
         //Recuperamos el LiveData de todos los contactos
         mAllContactos=mRepository.getAllContactos();
     }

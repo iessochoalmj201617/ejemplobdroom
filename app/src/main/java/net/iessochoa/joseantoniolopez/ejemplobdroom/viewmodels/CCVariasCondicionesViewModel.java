@@ -34,7 +34,7 @@ public class CCVariasCondicionesViewModel extends AndroidViewModel {
 
     public CCVariasCondicionesViewModel(@NonNull Application application) {
         super(application);
-        mRepository=new ContactoRepository(application);
+        mRepository=ContactoRepository.getInstance(application);
 
         condicionBusquedaLiveData =new MutableLiveData<HashMap<String,Object>>();
         //creamos el LiveData de condición de busqueda. Mantenemos los valores de la condición SQL en una sola
