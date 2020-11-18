@@ -16,7 +16,7 @@ public class TransformaFechaSQLite {
     }
     @TypeConverter
     public static Long dateToTimestamp(Date date) {
-        //le quitamos la hora, pero si la necesitárais, no llaméis a removeTime
+        //le quitamos la hora, pero si la necesitarais, no llaméis a removeTime
         return date == null ? null : removeTime(date).getTime();
     }
     public static Date removeTime(Date date) {
