@@ -12,6 +12,7 @@ import androidx.lifecycle.Transformations;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.repository.ContactoRepository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,14 +76,16 @@ public class DDOrdenarPorViewModel extends AndroidViewModel {
         //switchMap nos  permite cambiar el livedata de la consulta SQL
         // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
 
-        listContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<HashMap<String,Object>, LiveData<List<Contacto>>>() {
+        /*listContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<HashMap<String,Object>, LiveData<List<Contacto>>>() {
             @Override
             public LiveData<List<Contacto>> apply(HashMap<String,Object> condiciones) {
 
                 return mRepository.getContactosOrderBy((String) condiciones.get(ORDER_BY),(String)condiciones.get(ORDER));
             }
-        });
-
+        });*/
+        //version lambda
+        listContactosLiveData=Transformations.switchMap(condicionBusquedaLiveData,condicionesMap ->
+                mRepository.getContactosOrderBy((String) condicionesMap.get(ORDER_BY),(String)condicionesMap.get(ORDER)));
     }
 
 

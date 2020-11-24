@@ -47,15 +47,19 @@ public class CCVariasCondicionesViewModel extends AndroidViewModel {
         //switchMap nos  permite cambiar el livedata de la consulta SQL
         // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
 
-        listContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<HashMap<String,Object>, LiveData<List<Contacto>>>() {
+       /* listContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<HashMap<String,Object>, LiveData<List<Contacto>>>() {
             @Override
             public LiveData<List<Contacto>> apply(HashMap<String,Object> condiciones) {
 
                 return mRepository.getByNombreFecha((String) condiciones.get(NOMBRE),(Date)condiciones.get(FECHA_MENOR_QUE));
             }
-        });
-
+        });*/
+        //version lambda
+        listContactosLiveData=Transformations.switchMap(condicionBusquedaLiveData,condicionesMap ->
+                mRepository.getByNombreFecha((String) condicionesMap.get(NOMBRE),(Date)condicionesMap.get(FECHA_MENOR_QUE)));
     }
+
+    
     /*
     cambiamos la condición de busqueda
      */

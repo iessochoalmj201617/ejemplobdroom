@@ -37,14 +37,16 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
         condicionBusquedaLiveData.setValue("");
         //switchMap nos me permite cambiar el livedata de la consulta SQL
         // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
-        listaContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<String, LiveData<List<Contacto>>>() {
+        /*listaContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<String, LiveData<List<Contacto>>>() {
             //cuando cambie condicionBusquedaLivedata, se llamará a esta función con el valor
             //nuevo en el parámetro nombre
             @Override
             public LiveData<List<Contacto>> apply(String nombre) {
                 return mRepository.getByNombre(nombre);
             }
-        });
+        });*/
+        //version lambda
+        listaContactosLiveData=Transformations.switchMap(condicionBusquedaLiveData,nombre -> mRepository.getByNombre(nombre));
     }
     public LiveData<List<Contacto>> getByNombre()
     {
