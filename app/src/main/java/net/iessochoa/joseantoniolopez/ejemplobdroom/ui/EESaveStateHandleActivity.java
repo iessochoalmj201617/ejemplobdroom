@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 import net.iessochoa.joseantoniolopez.ejemplobdroom.model.Contacto;
@@ -27,12 +28,13 @@ public class EESaveStateHandleActivity extends AppCompatActivity {
 
     private EESaveStateViewModel contactoViewModel;
     private Button btnNuevo;
+    private ImageButton btnBuscar;
     private EditText etBuscar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bbcondicion_busqueda_view_model);
+        setContentView(R.layout.activity_e_e_save_state_handle);
 
 
         etBuscar=findViewById(R.id.etBuscar);
@@ -81,22 +83,9 @@ public class EESaveStateHandleActivity extends AppCompatActivity {
             }
         });
         //Cuando cambie el campo de búsqueda,Transformation.swichtMap cambiara la condicion de busqueda del livedata
-        etBuscar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        btnBuscar=findViewById(R.id.btnBuscar);
+        btnBuscar.setOnClickListener(v->contactoViewModel.setCondicionBusqueda(etBuscar.getText().toString()));
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //actualizamos el Livedata que a su vez cambiara las condiciones de busqueda
-                contactoViewModel.setCondicionBusqueda(editable.toString());
-            }
-        });
 
     }
     /*NUEVO CONTACTO*/

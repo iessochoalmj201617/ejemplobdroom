@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCondicionBusqueda;
     private Button btnVariasCondicionesBusqueda;
     private Button btnOrdenadoPor;
+    private Button btnSavedState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         btnCondicionBusqueda=findViewById(R.id.btnBusqueda);
         btnVariasCondicionesBusqueda=findViewById(R.id.btnVariasCondiciones);
         btnOrdenadoPor=findViewById(R.id.btnOdenadoPor);
+        btnSavedState=findViewById(R.id.btnSaveState);
 
         View.OnClickListener onClickListener=new View.OnClickListener() {
             private View view;
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
                     case  R.id.btnOdenadoPor:
                         intent  =new Intent(MainActivity.this, DDOrdenarPorActivity.class);
                         break;
+                    case  R.id.btnSaveState:
+                        intent  =new Intent(MainActivity.this, EESaveStateHandleActivity.class);
+                        break;
                 }
                 startActivity(intent);
             }
@@ -54,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
          btnCondicionBusqueda.setOnClickListener(onClickListener);
          btnVariasCondicionesBusqueda.setOnClickListener(onClickListener);
          btnOrdenadoPor.setOnClickListener(onClickListener);
+        btnSavedState.setOnClickListener(onClickListener);
+
 
     }
 }
