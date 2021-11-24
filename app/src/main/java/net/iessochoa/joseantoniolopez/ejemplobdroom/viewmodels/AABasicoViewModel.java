@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  *https://developer.android.com/topic/libraries/architecture/viewmodel
+ * En este ejemplo, recuperamos
  */
 public class AABasicoViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;

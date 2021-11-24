@@ -23,6 +23,10 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.BBCondicionBusque
 
 import java.util.List;
 
+/**
+ * Este ejemplo, probamos a cambiar las condiciones de búsqueda en la vista para enviar al viewmodel
+ * la nueva condición y esperar en el Observer a la respuesta
+ */
 public class BBCondicionBusquedaViewModelActivity extends AppCompatActivity {
     public static final int NUEVO_CONTACTO_REQUEST_CODE = 1;
 
@@ -51,23 +55,15 @@ public class BBCondicionBusquedaViewModelActivity extends AppCompatActivity {
         // nos mostrará el resultado automáticamente
         //
         btnNuevo=findViewById(R.id.btnNuevo);
-        btnNuevo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(BBCondicionBusquedaViewModelActivity.this,NuevoContactoActivity.class);
-                startActivityForResult(intent,NUEVO_CONTACTO_REQUEST_CODE);
-            }
+        btnNuevo.setOnClickListener(view -> {
+            Intent intent=new Intent(BBCondicionBusquedaViewModelActivity.this,NuevoContactoActivity.class);
+            startActivityForResult(intent,NUEVO_CONTACTO_REQUEST_CODE);
         });
         //asignamos la acción de borrado de elemento al recycler view. Fijaros como hemos creado
         //un nuevo objeto que implementa nuestra interface. Al borrar el elemento se muestra automaticamente
         //gracias al observer anterior
         //
-        adapter.setOnClickListener(new ContactoListAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(Contacto contacto) {
-                contactoViewModel.delete(contacto);
-            }
-        });
+        adapter.setOnClickListener(contacto -> contactoViewModel.delete(contacto));
         /*
          el livedata cuando cambian las condiciones de busqueda actualiza la query
          . En nuestro caso vamos
@@ -75,12 +71,7 @@ public class BBCondicionBusquedaViewModelActivity extends AppCompatActivity {
         Para ello, fijaros en la clase CondicioBusquedaViewModel, la clase Transformation
          */
         //Asignamos el observador a la busqueda hecha. Si hay cambios actualizamos el adaptador
-        contactoViewModel.getByNombre().observe(this, new Observer<List<Contacto>>() {
-            @Override
-            public void onChanged(List<Contacto> contactos) {
-                adapter.setContactos(contactos);
-            }
-        });
+        contactoViewModel.getByNombre().observe(this, contactos -> adapter.setContactos(contactos));
         //Cuando cambie el campo de búsqueda,Transformation.swichtMap cambiara la condicion de busqueda del livedata
         etBuscar.addTextChangedListener(new TextWatcher() {
             @Override

@@ -14,11 +14,11 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.repository.ContactoRepositor
 
 import java.util.List;
 
-/**
+/**                switchMap
  * https://www.it-swarm.net/es/android/como-y-donde-usar-transformations.switchmap/834875192/
  * En este caso, la sentencia sql depende de otro campo en el que el usuario puede realizar
  * una búsqueda, por lo tenemos la clase Transformation que nos permite modificar la condición
- * SQL cuando cuambien el campo de busqueda que a su vez es un livedata
+ * SQL cuando cuambien el campo de búsqueda que a su vez es un livedata
  */
 public class BBCondicionBusquedaViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
@@ -33,10 +33,11 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
 
         //Este Livedata estará asociado al editext de busqueda por nombre
         condicionBusquedaLiveData=new MutableLiveData<String>();
-        //en primer momento no hay condición
+        //en el primer momento no hay condición
         condicionBusquedaLiveData.setValue("");
         //switchMap nos me permite cambiar el livedata de la consulta SQL
         // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
+
         /*listaContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<String, LiveData<List<Contacto>>>() {
             //cuando cambie condicionBusquedaLivedata, se llamará a esta función con el valor
             //nuevo en el parámetro nombre
@@ -46,14 +47,14 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
             }
         });*/
         //version lambda
-        listaContactosLiveData=Transformations.switchMap(condicionBusquedaLiveData,nombre -> mRepository.getByNombre(nombre));
+        listaContactosLiveData=Transformations.switchMap(condicionBusquedaLiveData,
+                nombre -> mRepository.getByNombre(nombre));
     }
     public LiveData<List<Contacto>> getByNombre()
     {
         return listaContactosLiveData;
     }
     public void setCondicionBusqueda(String condicionBusqueda) {
-
         condicionBusquedaLiveData.setValue(condicionBusqueda);
     }
     //Inserción y borrado que se reflejará automáticamente gracias al observador creado en la
@@ -63,6 +64,5 @@ public class BBCondicionBusquedaViewModel extends AndroidViewModel {
     }
     public void delete(Contacto contacto){
         mRepository.delete(contacto);
-
     }
 }

@@ -20,41 +20,22 @@ import io.reactivex.Single;
 
 /*
 Room no permite sentencias SQL com parámetro en el Order By, por lo que tendremos
-que utilizar una consulta por cada tipo de ordenación si queremos que el usuario pueda
-mostras los datos ordenados por diferentes campos.
-Vamos utilizar la clase MediatorLiveData
-https://developer.android.com/reference/android/arch/lifecycle/MediatorLiveData
-Esta clase te permite observar un objeto que depende de otros LiveData combinados.
-Nosotros tendremos las dos consultas SQL de ordenación separadas y en funcíon de que
-el usuario elija ordenar por nombre o por fecha, le asignaremos a mediator el livedata que
-corresponda.
-En la Actividad, observaremos el MediatosLiveData, que cambiaremos cuando se elija fecha o nombre como
-método de ordanación.
-Está basado en el siguiente artículo
-//https://proandroiddev.com/mediatorlivedata-to-the-rescue-5d27645b9bc3
-
+que utilizar una consulta especial que podéis ver en la clase ContactoDao.
  */
 public class DDOrdenarPorViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
-    //utilizamos un HashMap con dos elementos: el primero nos sirve
-    //para buscar por nombre y el segundo será una fecha con la que buscaremos los menores que la fecha
+   /* utilizamos un HashMap con dos elementos:
+    -el primero nos sirve para indicar el campo por el que ordenamos
+    -el seguno para indicar si ordenamos ascendente o descendente*/
     private MutableLiveData<HashMap<String,Object>> condicionBusquedaLiveData;
-    //ordenaremos por nombre y por fecha
+    //Definimos
     private final String ORDER_BY="order_by";
     private final String ORDER="order";
-    public static final String ORDENAR_POR_NOMBRE=Contacto.NOMBRE;
-    public static final String ORDENAR_POR_FECHA=Contacto.FECHA_NACIMIENTO;
+
     //podremos elegir ascendente y descendente
     public static final String ORDENAR_ASC="ASC";
     public static final String ORDENAR_DESC="DESC";
-    public enum OrderBy
-    {
-        NOMBRE, FECHA;
-    }
-    public enum  Order
-    {
-        ASC,DESC;
-    }
+
 
 
     //resultado de la consulta SQL, cuando cambien la condición, se activará el observador y actualiza en pantalla el RecyclerView
@@ -90,38 +71,47 @@ public class DDOrdenarPorViewModel extends AndroidViewModel {
 
 
     /**
-     * Modifica la condición de busqueda
-     * @param orderBy: ordena por Nombre o por fecha
+     * Modifica la condición de busqueda:por fecha o nombre
      */
-    public void setOrderBy(OrderBy orderBy) {
+    public void setOrderByFecha() {
+        //recuperamos el HashMap con las condiciones de búsqueda actuales
         HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();
-        String ordenar="";
-        switch (orderBy){
-            case FECHA:
-                ordenar=Contacto.FECHA_NACIMIENTO;
-                break;
-            case NOMBRE:
-                ordenar=Contacto.NOMBRE;
-                break;
-        }
-        condiciones.put(ORDER_BY,ordenar);
+        condiciones.put(ORDER_BY,Contacto.FECHA_NACIMIENTO);
+        //activa el observer del HashMap que activa el Transformations.swirchMap para que realice
+        //la sentencia sql
         condicionBusquedaLiveData.setValue(condiciones);
     }
-
+    public void setOrderByNombre() {
+        //recuperamos el HashMap con las condiciones de búsqueda actuales
+        HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();
+        condiciones.put(ORDER_BY,Contacto.NOMBRE);
+        //activa el observer del HashMap que activa el Transformations.swirchMap para que realice
+        //la sentencia sql
+        condicionBusquedaLiveData.setValue(condiciones);
+    }
     /**
      * Modifica la condición de busqueda
-     * @param order: ordena Ascendente(ASC) o Descendente(DESC)
+     * ordena Ascendente(ASC) o Descendente(DESC)
      */
-    public void setOrder(Order order){
+    public void setOrderAsc(){
         HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();
-
-        condiciones.put(ORDER,order.toString());
+        condiciones.put(ORDER,ORDENAR_ASC);
         condicionBusquedaLiveData.setValue(condiciones);
     }
+    public void setOrderDesc(){
+        HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();
+        condiciones.put(ORDER,ORDENAR_DESC);
+        condicionBusquedaLiveData.setValue(condiciones);
+    }
+    //Nos devuelve todos los contactos
     public LiveData<List<Contacto>> getAllContactos() {
         return listContactosLiveData;
     }
-    //rxJava
+
+    /*rxJava: Este método nos permite recuperar el total de contactos con un observable de la
+    libreria RXJava. La clase Single nos permite una única observación, es suficiente para una consulta
+    única como es nuestro caso
+     */
     public Single<Integer> geTotalContactos(){
         return mRepository.geTotalContactos();
     }

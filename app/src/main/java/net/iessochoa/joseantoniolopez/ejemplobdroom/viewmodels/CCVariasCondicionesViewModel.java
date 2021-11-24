@@ -15,16 +15,20 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.repository.ContactoRepositor
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-//En este ejemplo haremos algo parecido que en el B pero con dos condiciones diferentes
-//Para conseguirlo, utilizaremos un livedata de tipo HashMap con dos valores, uno para
-//cada condición. Si cambia uno de ellos, actualizará la sentencia SQL mediante la clase
-//Transformation
+/**   switchMap: Varias condiciones mediante mediante HashMap
+ * En este ejemplo haremos algo parecido que en el B pero con dos condiciones diferentes
+ Para conseguirlo, utilizaremos un livedata de tipo HashMap con dos valores, uno para
+ cada condición. Si cambia uno de ellos, actualizará la sentencia SQL mediante la clase
+ Transformation
+ */
 // https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7
 public class CCVariasCondicionesViewModel extends AndroidViewModel {
     private ContactoRepository mRepository;
     //utilizamos un HashMap con dos elementos: el primero nos sirve
     //para buscar por nombre y el segundo será una fecha con la que buscaremos los menores que la fecha
     private MutableLiveData<HashMap<String,Object>> condicionBusquedaLiveData;
+    //Creamos dos constantes que serás las claves de los dos elementos del HashMap
+    //que contienen la condición de búsqueda actual
     private final String NOMBRE="nombre";
     private final String FECHA_MENOR_QUE="fecha";
 
@@ -44,8 +48,10 @@ public class CCVariasCondicionesViewModel extends AndroidViewModel {
         condiciones.put(FECHA_MENOR_QUE,new Date());//fecha actual
 
         condicionBusquedaLiveData.setValue(condiciones);
-        //switchMap nos  permite cambiar el livedata de la consulta SQL
-        // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
+        /*switchMap nos  permite cambiar el livedata de la consulta SQL al
+          modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
+        El Transformations.switchMap, nos devuelve el livedata observado(en nuestro caso la condición que
+        es el HashMap con las dos condiciones. Esto nos permite reasignar la sentencia SQL*/
 
        /* listContactosLiveData = Transformations.switchMap(condicionBusquedaLiveData, new Function<HashMap<String,Object>, LiveData<List<Contacto>>>() {
             @Override
@@ -61,7 +67,8 @@ public class CCVariasCondicionesViewModel extends AndroidViewModel {
 
     
     /*
-    cambiamos la condición de busqueda
+    cambiamos la condición de busqueda por fecha o por nombre. Esto activará el observer del
+    Hasmap de condiciónBusquedaLiveData
      */
     public void setFechaMenorQue(Date fecha) {
         HashMap<String, Object> condiciones= condicionBusquedaLiveData.getValue();

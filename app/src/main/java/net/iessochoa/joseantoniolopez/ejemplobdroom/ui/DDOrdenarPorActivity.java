@@ -71,10 +71,10 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.rbtPorFecha:
-                        contactoViewModel.setOrderBy(DDOrdenarPorViewModel.OrderBy.FECHA);
+                        contactoViewModel.setOrderByFecha();
                         break;
                     case R.id.rbtPorNombre:
-                        contactoViewModel.setOrderBy(DDOrdenarPorViewModel.OrderBy.NOMBRE);
+                        contactoViewModel.setOrderByNombre();
                 }
 
             }
@@ -85,10 +85,10 @@ public class DDOrdenarPorActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.rbAsc:
-                        contactoViewModel.setOrder(DDOrdenarPorViewModel.Order.ASC);
+                        contactoViewModel.setOrderAsc();
                         break;
                     case R.id.rbDesc:
-                        contactoViewModel.setOrder(DDOrdenarPorViewModel.Order.DESC);
+                        contactoViewModel.setOrderDesc();
                 }
 
             }

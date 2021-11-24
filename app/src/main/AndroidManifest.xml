@@ -20,7 +20,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.AABasicoViewModelActivity" />
         <activity android:name=".ui.NuevoContactoActivity" />
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -82,7 +82,7 @@ public interface ContactoDao {
 //https://programacionymas.com/blog/introduccion-rx-java-tutorial-android
 
     @Query("SELECT COUNT(*) FROM "+ Contacto.TABLE_NAME)
-    Single<Integer> geTotalContactos();
+    Single<Integer> getTotalContactos();
 
 
 

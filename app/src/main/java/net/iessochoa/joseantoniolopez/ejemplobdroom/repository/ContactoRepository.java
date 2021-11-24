@@ -67,7 +67,7 @@ public class ContactoRepository {
         return mAllContactos;
     }
     public Single<Integer> geTotalContactos(){
-        return mContactoDao.geTotalContactos();
+        return mContactoDao.getTotalContactos();
     }
     /*
     Insertar: nos obliga a crear tarea en segundo plano

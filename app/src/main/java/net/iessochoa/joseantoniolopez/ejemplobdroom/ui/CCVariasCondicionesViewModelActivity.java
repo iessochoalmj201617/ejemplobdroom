@@ -26,7 +26,12 @@ import net.iessochoa.joseantoniolopez.ejemplobdroom.viewmodels.CCVariasCondicion
 
 import java.util.Calendar;
 import java.util.List;
-
+/**    HashMap
+ * En este ejemplo haremos algo parecido que en el B pero con dos condiciones diferentes
+Para conseguirlo, utilizaremos un livedata de tipo HashMap con dos valores, uno para
+cada condición. Si cambia uno de ellos, actualizará la sentencia SQL mediante la clase
+Transformation
+ */
 public class CCVariasCondicionesViewModelActivity extends AppCompatActivity {
     public static final int NUEVO_CONTACTO_REQUEST_CODE = 1;
 
