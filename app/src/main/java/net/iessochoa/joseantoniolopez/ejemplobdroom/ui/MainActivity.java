@@ -9,6 +9,19 @@ import android.widget.Button;
 
 import net.iessochoa.joseantoniolopez.ejemplobdroom.R;
 
+/**
+ * Este ejemplo nos permite ver como podemos implementar el acceso a la base de datos sqlite
+ * mediante el patrón de diseño MVVM con el conjunto de librerías de Jetpack
+ * Tenemos una única base de datos de una agenda simple, vamos a ver diferentes opciones de acceso a los
+ * datos mediante Room y ViewModel
+ *
+ * AABasico: Acceso básico a la base de datos
+ * BBCondicionBusqueda: Patrón para  realizar una búsqueda de datos por parte del usuario en el que la condición puede ir cambiando
+ * CCVariasCondiciones: Patrón para manejar dos condiciones de búsqueda en la sentencia SQL
+ * DDOdenar: Patrón para manejar el cambien en  OrderBy en la sentencia SQL.
+ *          Patrón para manejar llamadas a la base de datos con rxJava
+ * EESaveState: Patrón para guardar el estado del ViewModel ante destrucción total
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Button btnBasico;

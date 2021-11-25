@@ -42,35 +42,22 @@ public class AABasicoViewModelActivity extends AppCompatActivity {
         contactoViewModel=  new ViewModelProvider(this).get(AABasicoViewModel.class);
         //Este livedata nos permite ver todos los contactos y en caso de que haya un cambio en la
         //base de datos, se mostrará automáticamente
-        contactoViewModel.getAllContactos().observe(this, new Observer<List<Contacto>>() {
-            @Override
-            public void onChanged(List<Contacto> contactos) {
-                    adapter.setContactos(contactos);
-            }
-        });
+        contactoViewModel.getAllContactos().observe(this, contactos -> adapter.setContactos(contactos));
         //NUEVO_CONTACTO
         //Creamos un nuevo contacto mediante otra actividad. Al insestar el nuevo elemento,el observer anterior
         // nos mostrará el resultado automáticamente
         //
         btnNuevo=findViewById(R.id.btnNuevo);
-        btnNuevo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(AABasicoViewModelActivity.this,NuevoContactoActivity.class);
-                startActivityForResult(intent,NUEVO_CONTACTO_REQUEST_CODE);
-            }
+        btnNuevo.setOnClickListener(view -> {
+            Intent intent=new Intent(AABasicoViewModelActivity.this,NuevoContactoActivity.class);
+            startActivityForResult(intent,NUEVO_CONTACTO_REQUEST_CODE);
         });
         //ACCION DE BORRADO
         //asignamos la acción de borrado de elemento al recycler view. Fijaros como hemos creado
         //un nuevo objeto que implementa nuestra interface. Al borrar el elemento se muestra automaticamente
         //gracias al observer anterior
         //
-        adapter.setOnClickListener(new ContactoListAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(Contacto contacto) {
-                contactoViewModel.delete(contacto);
-            }
-        });
+        adapter.setOnClickListener(contacto -> contactoViewModel.delete(contacto));
 
     }
 /*

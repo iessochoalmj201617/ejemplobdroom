@@ -40,20 +40,9 @@ public class ContactoListAdapter extends RecyclerView.Adapter<ContactoListAdapte
         if (mContactos != null) {
             final Contacto contacto = mContactos.get(position);
             holder.itemView.setText(contacto.toString());
-//asignamos el listener
-            if(listener!=null){
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        listener.onItemClick(contacto);
-                    }
-                });
-            }
-
         } else {
             // Covers the case of data not being ready yet.
             holder.itemView.setText("Sin contactos");
-
         }
     }
 
@@ -73,6 +62,14 @@ public class ContactoListAdapter extends RecyclerView.Adapter<ContactoListAdapte
         public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView.findViewById(R.id.textView);
+            //asignamos el listener
+            if(listener!=null){
+                itemView.setOnClickListener(view -> {
+                    //obtenemos el contacto que muestra el ViewHolder de la lista
+                    Contacto contacto=mContactos.get(ContactoViewHolder.this.getBindingAdapterPosition());
+                    listener.onItemClick(contacto);
+                });
+            }
         }
     }
     ContactoListAdapter(Context context){
